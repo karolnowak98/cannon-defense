@@ -46,6 +46,15 @@ namespace GlassyCode.CannonDefense
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseSkill"",
+                    ""type"": ""Button"",
+                    ""id"": ""eaf45289-43bf-4963-8ed2-9ccccec56782"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -125,6 +134,17 @@ namespace GlassyCode.CannonDefense
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7887cad9-942d-4de7-9e31-c1b6efeaf25c"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -135,6 +155,7 @@ namespace GlassyCode.CannonDefense
             m_Cannon = asset.FindActionMap("Cannon", throwIfNotFound: true);
             m_Cannon_Move = m_Cannon.FindAction("Move", throwIfNotFound: true);
             m_Cannon_Shoot = m_Cannon.FindAction("Shoot", throwIfNotFound: true);
+            m_Cannon_UseSkill = m_Cannon.FindAction("UseSkill", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -198,12 +219,14 @@ namespace GlassyCode.CannonDefense
         private List<ICannonActions> m_CannonActionsCallbackInterfaces = new List<ICannonActions>();
         private readonly InputAction m_Cannon_Move;
         private readonly InputAction m_Cannon_Shoot;
+        private readonly InputAction m_Cannon_UseSkill;
         public struct CannonActions
         {
             private @Controls m_Wrapper;
             public CannonActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Move => m_Wrapper.m_Cannon_Move;
             public InputAction @Shoot => m_Wrapper.m_Cannon_Shoot;
+            public InputAction @UseSkill => m_Wrapper.m_Cannon_UseSkill;
             public InputActionMap Get() { return m_Wrapper.m_Cannon; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -219,6 +242,9 @@ namespace GlassyCode.CannonDefense
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
+                @UseSkill.started += instance.OnUseSkill;
+                @UseSkill.performed += instance.OnUseSkill;
+                @UseSkill.canceled += instance.OnUseSkill;
             }
 
             private void UnregisterCallbacks(ICannonActions instance)
@@ -229,6 +255,9 @@ namespace GlassyCode.CannonDefense
                 @Shoot.started -= instance.OnShoot;
                 @Shoot.performed -= instance.OnShoot;
                 @Shoot.canceled -= instance.OnShoot;
+                @UseSkill.started -= instance.OnUseSkill;
+                @UseSkill.performed -= instance.OnUseSkill;
+                @UseSkill.canceled -= instance.OnUseSkill;
             }
 
             public void RemoveCallbacks(ICannonActions instance)
@@ -250,6 +279,7 @@ namespace GlassyCode.CannonDefense
         {
             void OnMove(InputAction.CallbackContext context);
             void OnShoot(InputAction.CallbackContext context);
+            void OnUseSkill(InputAction.CallbackContext context);
         }
     }
 }

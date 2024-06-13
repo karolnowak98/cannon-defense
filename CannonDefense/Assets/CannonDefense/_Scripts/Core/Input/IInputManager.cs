@@ -7,5 +7,6 @@ namespace GlassyCode.CannonDefense.Core.Input
     {
         Vector2 MoveAxis { get; }
         event Action OnSpacePressed;
+        event Action OnYPressed;
     }
 }

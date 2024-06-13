@@ -2,7 +2,7 @@ using GlassyCode.CannonDefense.Core.Applications.Data;
 using UnityEngine;
 using Zenject;
 
-namespace GlassyCode.CannonDefense.Core.Applications
+namespace GlassyCode.CannonDefense.Core.Applications.Logic
 {
     public sealed class ApplicationController : IApplicationController, IInitializable
     {
