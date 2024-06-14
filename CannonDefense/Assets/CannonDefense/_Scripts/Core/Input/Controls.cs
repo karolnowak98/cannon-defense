@@ -26,7 +26,7 @@ namespace GlassyCode.CannonDefense
     ""name"": ""Controls"",
     ""maps"": [
         {
-            ""name"": ""Cannon"",
+            ""name"": ""Player"",
             ""id"": ""8f14efd3-359d-42c5-b0a1-9e14d225873b"",
             ""actions"": [
                 {
@@ -151,8 +151,8 @@ namespace GlassyCode.CannonDefense
     ],
     ""controlSchemes"": []
 }");
-            // Cannon
-            m_Cannon = asset.FindActionMap("Cannon", throwIfNotFound: true);
+            // Player
+            m_Cannon = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Cannon_Move = m_Cannon.FindAction("Move", throwIfNotFound: true);
             m_Cannon_Shoot = m_Cannon.FindAction("Shoot", throwIfNotFound: true);
             m_Cannon_UseSkill = m_Cannon.FindAction("UseSkill", throwIfNotFound: true);
@@ -214,7 +214,7 @@ namespace GlassyCode.CannonDefense
             return asset.FindBinding(bindingMask, out action);
         }
 
-        // Cannon
+        // Player
         private readonly InputActionMap m_Cannon;
         private List<ICannonActions> m_CannonActionsCallbackInterfaces = new List<ICannonActions>();
         private readonly InputAction m_Cannon_Move;
