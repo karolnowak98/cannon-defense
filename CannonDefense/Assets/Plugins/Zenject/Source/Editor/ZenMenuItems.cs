@@ -135,10 +135,10 @@ namespace Zenject.Internal
                 + "\n}");
         }
 
-        [MenuItem("Assets/Create/Zenject/Editor Window", false, 20)]
+        [MenuItem("Assets/Create/Zenject/Editors Window", false, 20)]
         public static void CreateEditorWindow()
         {
-            AddCSharpClassTemplate("Editor Window", "UntitledEditorWindow",
+            AddCSharpClassTemplate("Editors Window", "UntitledEditorWindow",
                   "using UnityEngine;"
                 + "\nusing UnityEditor;"
                 + "\nusing Zenject;"
