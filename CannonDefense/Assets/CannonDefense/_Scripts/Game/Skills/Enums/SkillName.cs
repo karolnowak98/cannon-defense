@@ -2,6 +2,7 @@ namespace GlassyCode.CannonDefense.Game.Skills.Enums
 {
     public enum SkillName
     {
-        ExplosiveCannon
+        ExplosiveCannon,
+        PiercingCannon
     }
 }

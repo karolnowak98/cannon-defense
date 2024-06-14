@@ -2,7 +2,7 @@
 
 namespace GlassyCode.CannonDefense.Core.Data
 {
-    public class Entity : ScriptableObject
+    public class EntityData : ScriptableObject
     {
         [SerializeField] protected int _id;
 
