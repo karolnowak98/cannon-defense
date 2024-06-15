@@ -5,7 +5,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Shooting
     [RequireComponent(typeof(Rigidbody))]
     public class CannonBallMb : MonoBehaviour
     {
-        public float speed = 10f;
+        [SerializeField] private float _speed = 10f;
 
         private Rigidbody _rb;
 
@@ -16,7 +16,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Shooting
 
         private void Start()
         {
-            _rb.AddForce(Vector3.forward * speed, ForceMode.Impulse);
+            _rb.velocity = Vector3.forward * _speed;
         }
 
         private void OnCollisionEnter(Collision collision)
