@@ -2,7 +2,7 @@
 
 namespace GlassyCode.CannonDefense.Core.Data
 {
-    public class ConfigData : ScriptableObject
+    public class Config : ScriptableObject
     {
         
     }

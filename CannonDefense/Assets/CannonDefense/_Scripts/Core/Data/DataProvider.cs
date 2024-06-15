@@ -8,7 +8,7 @@ namespace GlassyCode.CannonDefense.Core.Data
 {
     public class DataProvider : IDataProvider
     {
-        private readonly Dictionary<Type, ConfigData> _configs = new();
+        private readonly Dictionary<Type, Config> _configs = new();
         private readonly Dictionary<Type, EntityData[]> _entities = new();
 
         [Inject]
@@ -17,7 +17,7 @@ namespace GlassyCode.CannonDefense.Core.Data
             dataHolder.RegisterAll(this);
         } 
 
-        public T GetConfig<T>() where T : ConfigData
+        public T GetConfig<T>() where T : Config
         { 
             var type = typeof(T);
             
@@ -28,13 +28,13 @@ namespace GlassyCode.CannonDefense.Core.Data
             return null;
         }
         
-        public void SetConfig<T>(ConfigData config) where T : ConfigData
+        public void SetConfig<T>(Config config) where T : Config
         { 
             var type = typeof(T);
             SetConfig(type, config);
         }
         
-        public void SetConfig(Type type, ConfigData config)
+        public void SetConfig(Type type, Config config)
         {
             if (_configs.TryAdd(type, config)) 
                 return;

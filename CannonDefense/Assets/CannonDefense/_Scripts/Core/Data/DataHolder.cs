@@ -21,7 +21,7 @@ namespace GlassyCode.CannonDefense.Core.Data
             _allData = AssetDatabase.FindAssets($"t:{nameof(ScriptableObject)}", new[] { DataPath })
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<ScriptableObject>)
-                .Where(so => so != null && (TypeUtils.IsOfTypeOrDerived(so.GetType(), typeof(ConfigData)) || TypeUtils.IsOfTypeOrDerived(so.GetType(), typeof(EntityData))))
+                .Where(so => so != null && (TypeUtils.IsOfTypeOrDerived(so.GetType(), typeof(Config)) || TypeUtils.IsOfTypeOrDerived(so.GetType(), typeof(EntityData))))
                 .ToArray();
 
             EditorUtility.SetDirty(this);
@@ -34,7 +34,7 @@ namespace GlassyCode.CannonDefense.Core.Data
             #endif
 
             var entityDataType = typeof(EntityData);
-            var configDataType = typeof(ConfigData);
+            var configDataType = typeof(Config);
 
             var entities = new Dictionary<Type, List<EntityData>>();
 
@@ -46,7 +46,7 @@ namespace GlassyCode.CannonDefense.Core.Data
                     
                     if (type.BaseType == configDataType)
                     {
-                        provider.SetConfig(type, (ConfigData)dataElement);
+                        provider.SetConfig(type, (Config)dataElement);
                     } 
                     else if (type.BaseType == entityDataType)
                     {

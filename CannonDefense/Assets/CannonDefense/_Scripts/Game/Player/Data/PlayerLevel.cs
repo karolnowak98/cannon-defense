@@ -8,6 +8,5 @@ namespace GlassyCode.CannonDefense.Game.Player.Data
     {
         [field: SerializeField] public int Level { get; private set; }
         [field: SerializeField] public int RequiredExpForLevelUp { get; private set; }
-        [field: SerializeField] public int Damage { get; private set; }
     }
 }

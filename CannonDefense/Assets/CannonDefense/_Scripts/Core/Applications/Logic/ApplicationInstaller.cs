@@ -7,11 +7,11 @@ namespace GlassyCode.CannonDefense.Core.Applications.Logic
 {
     public sealed class ApplicationInstaller : MonoInstaller
     {
-        [FormerlySerializedAs("_applicationConfig")] [SerializeField] private ApplicationConfigData _applicationConfigData;
+        [FormerlySerializedAs("_applicationConfigData")] [SerializeField] private ApplicationConfig _applicationConfig;
         
         public override void InstallBindings()
         {
-            Container.Bind<IApplicationConfig>().To<ApplicationConfigData>().FromInstance(_applicationConfigData).AsSingle();
+            Container.Bind<IApplicationConfig>().To<ApplicationConfig>().FromInstance(_applicationConfig).AsSingle();
             
             Container.Bind(typeof(ApplicationController), typeof(IApplicationController), typeof(IInitializable))
                 .To<ApplicationController>().AsSingle().NonLazy();

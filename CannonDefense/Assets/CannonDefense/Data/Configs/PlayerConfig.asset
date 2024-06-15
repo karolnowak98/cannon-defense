@@ -12,13 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a598b9719fa4bbaadbbcb54d177b6c3, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  <BaseStats>k__BackingField:
-    <Levels>k__BackingField:
-    - <Level>k__BackingField: 0
-      <RequiredExpForLevelUp>k__BackingField: 0
-      <Damage>k__BackingField: 0
-    <StartingMovementSpeed>k__BackingField: 0
-    <StartingHealth>k__BackingField: 0
+  <Stats>k__BackingField:
+    <Levels>k__BackingField: []
+    <Health>k__BackingField: 25
+  <Shooting>k__BackingField:
+    <Damage>k__BackingField: 2
+    <ProjectilePrefab>k__BackingField: {fileID: 1633118654912580072, guid: e99127251ec983a48a9ce7df328519ae, type: 3}
+    <ProjectileStartingPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <Transform>k__BackingField:
+    <StartingPosition>k__BackingField: {x: 0, y: 0, z: -13.86}
+  <Movement>k__BackingField:
+    <MoveSpeed>k__BackingField: 50
+    <MaxMoveSpeed>k__BackingField: 50
+    <DragForce>k__BackingField: 2
   <OffensiveSkills>k__BackingField:
-  - {fileID: 11400000, guid: 02bac404fd600104e83204fccd91ad8c, type: 2}
   - {fileID: 11400000, guid: 02bac404fd600104e83204fccd91ad8c, type: 2}
