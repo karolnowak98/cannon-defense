@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a598b9719fa4bbaadbbcb54d177b6c3, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  <Stats>k__BackingField:
+    <Levels>k__BackingField: []
+    <Health>k__BackingField: 25
+  <Movement>k__BackingField:
+    <InitialPosition>k__BackingField: {x: 0, y: 0, z: -14}
+    <MoveSpeed>k__BackingField: 50
+    <MaxMoveSpeed>k__BackingField: 25
+    <DragForce>k__BackingField: 2
+  <Shooting>k__BackingField:
+    <Damage>k__BackingField: 2
+    <CannonBall>k__BackingField: {fileID: 958554944359341398, guid: e99127251ec983a48a9ce7df328519ae, type: 3}
+    <CannonBallPoolInitialSize>k__BackingField: 25
+    <CannonBallPoolMaxSize>k__BackingField: 9999
+  <OffensiveSkills>k__BackingField:
+  - {fileID: 11400000, guid: 02bac404fd600104e83204fccd91ad8c, type: 2}

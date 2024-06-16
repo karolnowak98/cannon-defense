@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d3902e12f9728d42a9362de47c1c931, type: 3}
-  m_Name: Application Config
+  m_Script: {fileID: 11500000, guid: 471842a33c6d4d2cb61ee9c3238ff50d, type: 3}
+  m_Name: BigSphere
   m_EditorClassIdentifier: 
-  _targetFps: 120
+  _id: 0
+  <MoveSpeed>k__BackingField: 10
+  <Enemy>k__BackingField: {fileID: 0}
+  <Score>k__BackingField: 0
+  <Experience>k__BackingField: 0
