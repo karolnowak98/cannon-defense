@@ -1,4 +1,6 @@
 using GlassyCode.CannonDefense.Core.Input;
+using GlassyCode.CannonDefense.Core.Pools;
+using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Game.Player.Data.Shooting;
 using GlassyCode.CannonDefense.Game.Player.Logic.CannonBall;
 using UnityEngine;
@@ -8,7 +10,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Shooting
     public class ShootingController : IShootingController
     {
         private readonly IInputManager _inputManager;
-        private readonly ICannonBallPool _cannonBallPool;
+        private readonly IGlassyObjectPool<CannonBall.CannonBall> _cannonBallPool;
         
         private bool _canShoot;
         

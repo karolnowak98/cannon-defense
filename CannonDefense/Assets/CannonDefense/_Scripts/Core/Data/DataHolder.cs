@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GlassyCode.CannonDefense.Core.Utility.Static;
+using GlassyCode.CannonDefense.Core.Utility;
 using UnityEditor;
 using UnityEngine;
 

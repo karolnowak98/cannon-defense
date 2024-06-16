@@ -1,6 +1,9 @@
-using GlassyCode.CannonDefense.Core.Pool;
+using GlassyCode.CannonDefense.Core.Pools;
+using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
+using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using UnityEngine;
+using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
@@ -8,20 +11,33 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
     {
         [SerializeField] private EnemyData _data;
 
+        private SignalBus _signalBus;
         private Rigidbody _rb;
         private float _currentHealth;
-        
+
+        [Inject]
+        private void Construct(SignalBus signalBus)
+        {
+            _signalBus = signalBus;
+        }
+
         private void Awake()
         {
             TryGetComponent(out _rb);
             _currentHealth = _data.Health;
         }
+        
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Finish"))
+            {
+                CrossFinishLine();
+            }
+        }
 
         public override void Reset()
         {
-            //SetRandomPosition
-            //SetPosition();
-            _rb.velocity = Vector3.forward * _data.MoveSpeed;
+            _rb.velocity = Vector3.back * _data.MoveSpeed;
             Enable();
         }
 
@@ -37,7 +53,16 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 
         private void Die()
         {
-            Pool.Release(this);
+            _signalBus.TryFire(new EnemyKilledSignal { Type = _data.Type, Score = _data.Score, Experience = _data.Experience});
+            Pool?.Release(this);
         }
+
+        private void CrossFinishLine()
+        {
+            _signalBus.TryFire(new EnemyCrossFinishLineSignal { Damage = _data.Damage });
+            Pool?.Release(this);
+        }
+        
+        public class Factory : PlaceholderFactory<Object, Enemy>{ }
     }
 }

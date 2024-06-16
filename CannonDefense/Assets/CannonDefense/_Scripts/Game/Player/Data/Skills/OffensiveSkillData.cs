@@ -1,5 +1,5 @@
 using GlassyCode.CannonDefense.Core.Editors;
-using GlassyCode.CannonDefense.Core.Utility.Static;
+using GlassyCode.CannonDefense.Core.Utility;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Game.Player.Data.Skills

@@ -16,5 +16,10 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Stats
         {
             
         }
+
+        public void TakeDamage(int damage)
+        {
+            
+        }
     }
 }

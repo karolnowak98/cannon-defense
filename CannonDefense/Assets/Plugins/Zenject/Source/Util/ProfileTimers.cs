@@ -69,12 +69,12 @@ namespace Zenject
                 return null;
             }
 
-            return TimedBlock.Pool.Spawn(timer);
+            return TimedBlock.Pools.Spawn(timer);
         }
 
         class TimedBlock : IDisposable
         {
-            public static StaticMemoryPool<TimerInfo, TimedBlock> Pool =
+            public static StaticMemoryPool<TimerInfo, TimedBlock> Pools =
                 new StaticMemoryPool<TimerInfo, TimedBlock>(OnSpawned, OnDespawned);
 
             readonly List<TimerInfo> _pausedTimers = new List<TimerInfo>();
@@ -119,7 +119,7 @@ namespace Zenject
 
             public void Dispose()
             {
-                Pool.Despawn(this);
+                Pools.Despawn(this);
             }
         }
 

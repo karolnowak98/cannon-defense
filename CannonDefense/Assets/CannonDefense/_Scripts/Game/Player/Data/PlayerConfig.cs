@@ -1,5 +1,5 @@
 using GlassyCode.CannonDefense.Core.Data;
-using GlassyCode.CannonDefense.Core.Utility.Static;
+using GlassyCode.CannonDefense.Core.Utility;
 using GlassyCode.CannonDefense.Game.Player.Data.Movement;
 using GlassyCode.CannonDefense.Game.Player.Data.Shooting;
 using GlassyCode.CannonDefense.Game.Player.Data.Skills;

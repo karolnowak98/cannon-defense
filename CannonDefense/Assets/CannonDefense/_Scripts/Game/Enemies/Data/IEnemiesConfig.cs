@@ -5,9 +5,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Data
 {
     public interface IEnemiesConfig
     {
-        Enemy Enemy { get; }
+        Enemy[] Enemies { get; }
         float SpawnInterval { get; }
-        Transform SpawningArea { get; }
         int EnemyPoolInitialSize { get; }
         int EnemyPoolMaxSize { get; }
     }

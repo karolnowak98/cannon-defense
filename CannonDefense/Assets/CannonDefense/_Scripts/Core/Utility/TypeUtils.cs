@@ -1,6 +1,6 @@
 using System;
 
-namespace GlassyCode.CannonDefense.Core.Utility.Static
+namespace GlassyCode.CannonDefense.Core.Utility
 {
     public static class TypeUtils
     {

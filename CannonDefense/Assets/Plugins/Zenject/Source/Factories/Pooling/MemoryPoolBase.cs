@@ -214,7 +214,7 @@ namespace Zenject
             if (_settings.ExpandMethod == PoolExpandMethods.Disabled)
             {
                 throw new PoolExceededFixedSizeException(
-                    "Pool factory '{0}' attempted resize but pool set to fixed size of '{1}'!"
+                    "Pools factory '{0}' attempted resize but pool set to fixed size of '{1}'!"
                     .Fmt(GetType(), _inactiveItems.Count));
             }
 
@@ -240,7 +240,7 @@ namespace Zenject
                 case PoolExpandMethods.Disabled:
                 {
                     throw new PoolExceededFixedSizeException(
-                        "Pool factory '{0}' exceeded its fixed size of '{1}'!"
+                        "Pools factory '{0}' exceeded its fixed size of '{1}'!"
                         .Fmt(GetType(), _inactiveItems.Count));
                 }
                 case PoolExpandMethods.OneAtATime:

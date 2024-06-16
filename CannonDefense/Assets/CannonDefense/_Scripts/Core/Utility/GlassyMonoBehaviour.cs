@@ -4,6 +4,8 @@ namespace GlassyCode.CannonDefense.Core.Utility
 {
     public abstract class GlassyMonoBehaviour : MonoBehaviour
     {
+        public bool IsActive => gameObject.activeSelf;
+        
         public void Enable()
         {
             gameObject.SetActive(true);

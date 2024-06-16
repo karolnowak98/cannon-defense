@@ -1,12 +1,12 @@
-using UnityEngine;
 using UnityEngine.Pool;
 
-namespace GlassyCode.CannonDefense.Core.Pool
+namespace GlassyCode.CannonDefense.Core.Pools.Object
 {
-    public class GlassyObjectPool<T> where T : GlassyObjectPoolElement<T>
+    public abstract class GlassyObjectPool<T> : IGlassyObjectPool<T> where T : GlassyObjectPoolElement<T>
     {
-        protected readonly ObjectPool<T> Pool;
         protected readonly T Prefab;
+
+        public ObjectPool<T> Pool { get; private set; }
 
         protected GlassyObjectPool(T prefab, int initialSize = 10, int maxSize = 10000)
         {
@@ -17,7 +17,7 @@ namespace GlassyCode.CannonDefense.Core.Pool
         
         protected virtual T CreateElement()
         {
-            var element = Object.Instantiate(Prefab);
+            var element = UnityEngine.Object.Instantiate(Prefab);
             element.Pool = Pool;
             element.Reset();
             return element;

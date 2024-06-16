@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 5019990067763581779, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+    - target: {fileID: 7572814299010530781, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
+      propertyPath: _data
+      value: 
+      objectReference: {fileID: 11400000, guid: 323a10549d8efec49bc7840684da4a9f, type: 2}
     - target: {fileID: 8434914716518448379, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
       propertyPath: m_Name
       value: LittleCube
@@ -64,22 +72,22 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8434914716518448379, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 5672677575974145569, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8798542671325004900}
+      addedObject: {fileID: 344673038238680348}
   m_SourcePrefab: {fileID: 100100000, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
---- !u!1 &8980147632119655696 stripped
+--- !u!1 &5127441344717266890 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 8434914716518448379, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
+  m_CorrespondingSourceObject: {fileID: 5672677575974145569, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
   m_PrefabInstance: {fileID: 689387811346141675}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &8798542671325004900
+--- !u!65 &344673038238680348
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8980147632119655696}
+  m_GameObject: {fileID: 5127441344717266890}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -88,7 +96,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
