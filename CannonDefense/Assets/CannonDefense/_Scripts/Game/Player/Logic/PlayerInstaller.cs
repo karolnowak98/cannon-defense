@@ -8,8 +8,8 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
     public class PlayerInstaller : MonoInstaller
     {
         [SerializeField] private PlayerConfig _config;
-        [SerializeField] private Transform _player;
-        [SerializeField] private Rigidbody _playerRb;
+        [SerializeField] private Transform _transform;
+        [SerializeField] private Rigidbody _rb;
         [SerializeField] private Transform _cannonBallSpawnPoint;
         
         public override void InstallBindings()
@@ -20,7 +20,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
                     typeof(IDisposable), typeof(ITickable), typeof(IFixedTickable))
                 .To<PlayerController>()
                 .AsSingle()
-                .WithArguments(_player, _playerRb, _cannonBallSpawnPoint);
+                .WithArguments(_transform, _rb, _cannonBallSpawnPoint);
         }
     }
 }

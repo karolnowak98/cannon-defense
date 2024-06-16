@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 894812337}
   m_Layer: 0
   m_Name: EnemySpawnerArea
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -335,7 +335,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 894812336}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -955,6 +955,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4295624946903304430, guid: d00e751a0ba8183469a22be45d812c25, type: 3}
+      propertyPath: _rb
+      value: 
+      objectReference: {fileID: 552735000}
+    - target: {fileID: 4295624946903304430, guid: d00e751a0ba8183469a22be45d812c25, type: 3}
       propertyPath: _config
       value: 
       objectReference: {fileID: 11400000, guid: a35ee4857729eaf4583e057a06fb9433, type: 2}
@@ -966,6 +970,10 @@ PrefabInstance:
       propertyPath: _playerRb
       value: 
       objectReference: {fileID: 552735000}
+    - target: {fileID: 4295624946903304430, guid: d00e751a0ba8183469a22be45d812c25, type: 3}
+      propertyPath: _transform
+      value: 
+      objectReference: {fileID: 552735001}
     - target: {fileID: 4295624946903304430, guid: d00e751a0ba8183469a22be45d812c25, type: 3}
       propertyPath: _cannonBallSpawnPoint
       value: 
@@ -1049,7 +1057,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3697202088241802229, guid: 24d1a7571b2af4742bfa8f82f9d8dc8a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -13.86
+      value: -14
       objectReference: {fileID: 0}
     - target: {fileID: 3697202088241802229, guid: 24d1a7571b2af4742bfa8f82f9d8dc8a, type: 3}
       propertyPath: m_LocalRotation.w

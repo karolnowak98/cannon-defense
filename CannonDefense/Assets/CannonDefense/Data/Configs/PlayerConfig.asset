@@ -15,15 +15,15 @@ MonoBehaviour:
   <Stats>k__BackingField:
     <Levels>k__BackingField: []
     <Health>k__BackingField: 25
+  <Movement>k__BackingField:
+    <InitialPosition>k__BackingField: {x: 0, y: 0, z: -14}
+    <MoveSpeed>k__BackingField: 50
+    <MaxMoveSpeed>k__BackingField: 25
+    <DragForce>k__BackingField: 2
   <Shooting>k__BackingField:
     <Damage>k__BackingField: 2
-    <ProjectilePrefab>k__BackingField: {fileID: 1633118654912580072, guid: e99127251ec983a48a9ce7df328519ae, type: 3}
-    <ProjectileStartingPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  <Transform>k__BackingField:
-    <StartingPosition>k__BackingField: {x: 0, y: 0, z: -13.86}
-  <Movement>k__BackingField:
-    <MoveSpeed>k__BackingField: 50
-    <MaxMoveSpeed>k__BackingField: 50
-    <DragForce>k__BackingField: 2
+    <CannonBall>k__BackingField: {fileID: 958554944359341398, guid: e99127251ec983a48a9ce7df328519ae, type: 3}
+    <CannonBallPoolInitialSize>k__BackingField: 25
+    <CannonBallPoolMaxSize>k__BackingField: 9999
   <OffensiveSkills>k__BackingField:
   - {fileID: 11400000, guid: 02bac404fd600104e83204fccd91ad8c, type: 2}

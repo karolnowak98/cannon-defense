@@ -1,6 +1,9 @@
 using GlassyCode.CannonDefense.Core.Data;
-using GlassyCode.CannonDefense.Core.Utility;
-using GlassyCode.CannonDefense.Game.Skills.Data;
+using GlassyCode.CannonDefense.Core.Utility.Static;
+using GlassyCode.CannonDefense.Game.Player.Data.Movement;
+using GlassyCode.CannonDefense.Game.Player.Data.Shooting;
+using GlassyCode.CannonDefense.Game.Player.Data.Skills;
+using GlassyCode.CannonDefense.Game.Player.Data.Stats;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Game.Player.Data
@@ -9,9 +12,8 @@ namespace GlassyCode.CannonDefense.Game.Player.Data
     public class PlayerConfig : Config, IPlayerConfig
     {
         [field: SerializeField] public StatsData Stats { get; private set; }
-        [field: SerializeField] public ShootingData Shooting { get; private set; }
-        [field: SerializeField] public TransformData Transform { get; private set; }
         [field: SerializeField] public MovementData Movement { get; private set; }
-        [field: SerializeField] public OffensiveSkillEntityData[] OffensiveSkills { get; private set; }
+        [field: SerializeField] public ShootingData Shooting { get; private set; }
+        [field: SerializeField] public OffensiveSkillData[] OffensiveSkills { get; private set; }
     }
 }

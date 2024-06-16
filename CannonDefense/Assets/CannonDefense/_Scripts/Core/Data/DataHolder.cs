@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GlassyCode.CannonDefense.Core.Utility;
+using GlassyCode.CannonDefense.Core.Utility.Static;
 using UnityEditor;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Core.Data
 {
-    [CreateAssetMenu(fileName = "DataHolder", menuName = "Idea/Data/DataHolder")]
+    [CreateAssetMenu(fileName = "DataHolder", menuName = "Data/DataHolder")]
     public class DataHolder : ScriptableObject
     {
         private const string DataPath = "Assets/CannonDefense/Data";

@@ -1,5 +1,5 @@
 using GlassyCode.CannonDefense.Core.Input;
-using GlassyCode.CannonDefense.Game.Player.Data;
+using GlassyCode.CannonDefense.Game.Player.Data.Movement;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Game.Player.Logic.Movement
@@ -7,26 +7,30 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Movement
     public sealed class MovementController : IMovementController
     {
         private readonly IInputManager _inputManager;
+        private readonly Transform _transform;
         private readonly Rigidbody _rb;
         private readonly float _maxMoveSpeed;
         private readonly float _moveSpeed;
+        private readonly Vector3 _initialPosition;
         
         private Vector3 _moveDirection;
         private bool _canMove;
         
-        public MovementController(IInputManager inputManager, Rigidbody rb, MovementData data)
+        public MovementController(IInputManager inputManager, Transform transform, Rigidbody rb, MovementData data)
         {
             _inputManager = inputManager;
+            _transform = transform;
             _rb = rb;
             _rb.drag = data.DragForce;
-            
             _maxMoveSpeed = data.MaxMoveSpeed;
             _moveSpeed = data.MoveSpeed;
+            _initialPosition = data.InitialPosition;
+
         }
 
         public void Dispose()
         {
-            DisableMovement();
+            Disable();
         }
 
         public void Tick()
@@ -44,14 +48,19 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Movement
             AddMoveForce();
         }
         
-        public void EnableMovement()
+        public void Enable()
         {
             _canMove = true;
         }
 
-        public void DisableMovement()
+        public void Disable()
         {
             _canMove = false;
+        }
+
+        public void ResetPosition()
+        {
+            _transform.position = _initialPosition;
         }
         
         private void GetInput()

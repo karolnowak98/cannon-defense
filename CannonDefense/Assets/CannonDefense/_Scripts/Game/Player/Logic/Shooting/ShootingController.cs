@@ -1,5 +1,6 @@
 using GlassyCode.CannonDefense.Core.Input;
-using GlassyCode.CannonDefense.Game.Player.Data;
+using GlassyCode.CannonDefense.Game.Player.Data.Shooting;
+using GlassyCode.CannonDefense.Game.Player.Logic.CannonBall;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Game.Player.Logic.Shooting
@@ -7,28 +8,24 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Shooting
     public class ShootingController : IShootingController
     {
         private readonly IInputManager _inputManager;
-        private readonly ShootingData _data;
-        private readonly Transform _cannonBallSpawnPoint;
+        private readonly ICannonBallPool _cannonBallPool;
         
         private bool _canShoot;
-        //private float _lastShotTime;
-        
-        //public event Action<IEnemy> OnEnemyHit;
         
         public ShootingController(IInputManager inputManager, ShootingData data, Transform cannonBallSpawnPoint)
         {
             _inputManager = inputManager;
-            _data = data;
-            _cannonBallSpawnPoint = cannonBallSpawnPoint;
+            
+            _cannonBallPool = new CannonBallPool(data, cannonBallSpawnPoint);
         }
-        
-        public void EnableShooting()
+
+        public void Enable()
         {
             _inputManager.OnSpacePressed += Shoot;
             _canShoot = true;
         }
 
-        public void DisableShooting()
+        public void Disable()
         {
             _canShoot = false;
             _inputManager.OnSpacePressed -= Shoot;
@@ -37,8 +34,8 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Shooting
         private void Shoot()
         {
             if (!_canShoot) return;
-            
-            Object.Instantiate(_data.ProjectilePrefab, _cannonBallSpawnPoint.position, Quaternion.identity);
+
+            _cannonBallPool.Pool.Get();
         }
     }
 }

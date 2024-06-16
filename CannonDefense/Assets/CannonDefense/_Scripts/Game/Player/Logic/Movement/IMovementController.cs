@@ -5,7 +5,8 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Movement
         void Dispose();
         void Tick();
         void FixedTick();
-        void EnableMovement();
-        void DisableMovement();
+        void Enable();
+        void Disable();
+        void ResetPosition();
     }
 }

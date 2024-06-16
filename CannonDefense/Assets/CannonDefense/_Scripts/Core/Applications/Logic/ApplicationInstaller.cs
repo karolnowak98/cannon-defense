@@ -1,13 +1,12 @@
 using GlassyCode.CannonDefense.Core.Applications.Data;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace GlassyCode.CannonDefense.Core.Applications.Logic
 {
     public sealed class ApplicationInstaller : MonoInstaller
     {
-        [FormerlySerializedAs("_applicationConfigData")] [SerializeField] private ApplicationConfig _applicationConfig;
+        [SerializeField] private ApplicationConfig _applicationConfig;
         
         public override void InstallBindings()
         {
