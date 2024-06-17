@@ -1,4 +1,3 @@
-using GlassyCode.CannonDefense.Core.Pools;
 using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
@@ -10,6 +9,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
     public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy
     {
         [SerializeField] private EnemyData _data;
+
+        public EnemyType Type => _data.Type;
 
         private SignalBus _signalBus;
         private Rigidbody _rb;
@@ -54,13 +55,21 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private void Die()
         {
             _signalBus.TryFire(new EnemyKilledSignal { Type = _data.Type, Score = _data.Score, Experience = _data.Experience});
-            Pool?.Release(this);
+           
+            if (IsActive)
+            {
+                Pool.Release(this);
+            }
         }
 
         private void CrossFinishLine()
         {
-            _signalBus.TryFire(new EnemyCrossFinishLineSignal { Damage = _data.Damage });
-            Pool?.Release(this);
+            _signalBus.TryFire(new EnemyAttackedSignal { Damage = _data.Damage });
+            
+            if (IsActive)
+            {
+                Pool.Release(this);
+            }
         }
         
         public class Factory : PlaceholderFactory<Object, Enemy>{ }

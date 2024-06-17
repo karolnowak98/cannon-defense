@@ -16,9 +16,9 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
         {
             Container.Bind<IPlayerConfig>().To<PlayerConfig>().FromInstance(_config).AsSingle();
             
-            Container.Bind(typeof(PlayerController), typeof(IPlayerController),
+            Container.Bind(typeof(PlayerManager), typeof(IPlayerManager),
                     typeof(IDisposable), typeof(ITickable), typeof(IFixedTickable))
-                .To<PlayerController>()
+                .To<PlayerManager>()
                 .AsSingle()
                 .WithArguments(_transform, _rb, _cannonBallSpawnPoint);
         }

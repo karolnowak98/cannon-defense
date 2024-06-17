@@ -1,6 +1,6 @@
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic.Signals
 {
-    public struct EnemyCrossFinishLineSignal
+    public struct EnemyAttackedSignal
     {
         public int Damage;
     }

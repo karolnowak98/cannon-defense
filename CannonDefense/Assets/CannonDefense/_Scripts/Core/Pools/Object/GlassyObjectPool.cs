@@ -6,13 +6,18 @@ namespace GlassyCode.CannonDefense.Core.Pools.Object
     {
         protected readonly T Prefab;
 
-        public ObjectPool<T> Pool { get; private set; }
-
+        public IObjectPool<T> Pool { get; }
+        
         protected GlassyObjectPool(T prefab, int initialSize = 10, int maxSize = 10000)
         {
             Prefab = prefab;
 
-            Pool = new ObjectPool<T>(CreateElement, OnGetElementFromPool, OnReleaseElementToPool, OnDestroyElement, true, initialSize, maxSize);
+            Pool = new ObjectPool<T>(CreateElement, OnGetElementFromPool, OnReleaseElementToPool, OnDestroyElement, false, initialSize, maxSize);
+        }
+        
+        public void Clear()
+        {
+            Pool.Clear();
         }
         
         protected virtual T CreateElement()

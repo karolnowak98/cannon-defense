@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: BigCube
   m_EditorClassIdentifier: 
   _id: 0
-  <EnemyName>k__BackingField: 0
+  <Type>k__BackingField: 0
   <MoveSpeed>k__BackingField: 10
   <Health>k__BackingField: 50
-  <Score>k__BackingField: 0
-  <Experience>k__BackingField: 0
+  <Damage>k__BackingField: 5
+  <Score>k__BackingField: 10
+  <Experience>k__BackingField: 20

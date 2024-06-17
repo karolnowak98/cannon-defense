@@ -1,4 +1,3 @@
-using GlassyCode.CannonDefense.Core.Pools;
 using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Game.Player.Data.Shooting;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.CannonBall
 
         protected override CannonBall CreateElement()
         {
-            var cannonBall = base.CreateElement(); 
+            var cannonBall = base.CreateElement();
             cannonBall.SetPosition(_spawnPoint.position);
             return cannonBall;
         }

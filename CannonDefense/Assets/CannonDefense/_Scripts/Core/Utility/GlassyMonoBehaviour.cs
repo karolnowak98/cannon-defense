@@ -28,6 +28,7 @@ namespace GlassyCode.CannonDefense.Core.Utility
 
         public void Destroy()
         {
+            Debug.Log("Destroying object: " + gameObject.name);
             Destroy(gameObject);
         }
 

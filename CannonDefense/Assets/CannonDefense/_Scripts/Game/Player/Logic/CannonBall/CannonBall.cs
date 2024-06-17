@@ -1,4 +1,3 @@
-using GlassyCode.CannonDefense.Core.Pools;
 using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Game.Enemies.Logic;
 using GlassyCode.CannonDefense.Game.Player.Data.CannonBall;
@@ -27,22 +26,18 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.CannonBall
         private void OnTriggerEnter(Collider col)
         {
             var go = col.gameObject;
-            
-            if (!go.CompareTag("Enemy")) return;
 
-            go.TryGetComponent<Enemy>(out var enemyMb);
-
-            enemyMb?.TakeDamage(2);
-            
-            if (IsActive)
+            if (go.CompareTag("GetEnemyByType"))
             {
-                Pool?.Release(this);
-            }
-        }
+                go.TryGetComponent<Enemy>(out var enemy);
 
-        private void OnCollisionEnter(Collision col)
-        {
-            
+                enemy?.TakeDamage(_data.Damage);
+
+                if (IsActive)
+                {
+                    Pool.Release(this);
+                }
+            }
         }
     }
 }

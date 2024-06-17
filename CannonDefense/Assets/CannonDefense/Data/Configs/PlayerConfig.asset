@@ -13,15 +13,20 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   <Stats>k__BackingField:
-    <Levels>k__BackingField: []
-    <Health>k__BackingField: 25
+    <Levels>k__BackingField:
+    - <Level>k__BackingField: 1
+      <RequiredExpForLevelUp>k__BackingField: 100
+    - <Level>k__BackingField: 2
+      <RequiredExpForLevelUp>k__BackingField: 200
+    - <Level>k__BackingField: 3
+      <RequiredExpForLevelUp>k__BackingField: 500
+    <Health>k__BackingField: 100
   <Movement>k__BackingField:
     <InitialPosition>k__BackingField: {x: 0, y: 0, z: -14}
     <MoveSpeed>k__BackingField: 50
-    <MaxMoveSpeed>k__BackingField: 25
+    <MaxMoveSpeed>k__BackingField: 200
     <DragForce>k__BackingField: 2
   <Shooting>k__BackingField:
-    <Damage>k__BackingField: 2
     <CannonBall>k__BackingField: {fileID: 958554944359341398, guid: e99127251ec983a48a9ce7df328519ae, type: 3}
     <CannonBallPoolInitialSize>k__BackingField: 25
     <CannonBallPoolMaxSize>k__BackingField: 9999

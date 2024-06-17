@@ -1,6 +1,5 @@
 using System;
 using GlassyCode.CannonDefense.Core.Input;
-using GlassyCode.CannonDefense.Game.Enemies.Logic;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using GlassyCode.CannonDefense.Game.Player.Data;
 using GlassyCode.CannonDefense.Game.Player.Logic.Movement;
@@ -11,7 +10,7 @@ using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Player.Logic
 {
-    public class PlayerController : IPlayerController, IDisposable, ITickable, IFixedTickable
+    public class PlayerManager : IPlayerManager, IDisposable, ITickable, IFixedTickable
     {
         private SignalBus _signalBus;
         
@@ -19,25 +18,29 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
         public IStatsController Stats { get; private set; }
         public IMovementController Movement { get; private set; }
         public IShootingController Shooting { get; private set; }
-        
+
         [Inject]
         private void Construct(SignalBus signalBus, IInputManager inputManager, IPlayerConfig config, Transform transform, Rigidbody rb, Transform cannonBallSpawnPoint)
         {
             _signalBus = signalBus;
             Config = config;
-            Stats = new StatsController();
+            
+            Stats = new StatsController(config.Stats);
             Movement = new MovementController(inputManager, transform, rb, config.Movement);
             Shooting = new ShootingController(inputManager, config.Shooting, cannonBallSpawnPoint);
             
-            _signalBus.Subscribe<EnemyCrossFinishLineSignal>(enemy => Stats.TakeDamage(enemy.Damage));
-            
-            EnableControls();
+            _signalBus.Subscribe<EnemyAttackedSignal>(Stats.EnemyAttackedHandler);
+            _signalBus.Subscribe<EnemyKilledSignal>(Stats.EnemyKilledHandler);
+
+            Reset();
         }
         
         public void Dispose()
         {
-            //_signalBus.TryUnsubscribe<EnemyCrossFinishLineSignal>();
             Movement.Dispose();
+            
+            _signalBus.TryUnsubscribe<EnemyAttackedSignal>(Stats.EnemyAttackedHandler);
+            _signalBus.TryUnsubscribe<EnemyKilledSignal>(Stats.EnemyKilledHandler);
         }
 
         public void Tick()

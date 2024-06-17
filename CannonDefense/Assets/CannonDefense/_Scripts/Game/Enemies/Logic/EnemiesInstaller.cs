@@ -14,22 +14,22 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             Container.Bind<IEnemiesConfig>().To<EnemiesConfig>().FromInstance(_config).AsSingle();
 
-            Container.Bind(typeof(EnemiesController), typeof(IEnemiesController), typeof(ITickable))
-                .To<EnemiesController>()
+            Container.Bind(typeof(EnemiesManager), typeof(IEnemiesManager), typeof(ITickable))
+                .To<EnemiesManager>()
                 .AsSingle()
                 .WithArguments(_spawningArea);
-
+            
             DeclareSignals();
-            InstallFactories();
+            BindFactory();
         }
 
         private void DeclareSignals()
         {
-            Container.DeclareSignal<EnemyCrossFinishLineSignal>();
+            Container.DeclareSignal<EnemyAttackedSignal>();
             Container.DeclareSignal<EnemyKilledSignal>();
         }
 
-        private void InstallFactories()
+        private void BindFactory()
         {
             Container.BindFactory<Object, Enemy, Enemy.Factory>().FromFactory<PrefabFactory<Enemy>>();
         }

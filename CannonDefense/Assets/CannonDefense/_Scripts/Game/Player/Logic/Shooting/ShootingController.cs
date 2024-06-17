@@ -1,5 +1,4 @@
 using GlassyCode.CannonDefense.Core.Input;
-using GlassyCode.CannonDefense.Core.Pools;
 using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Game.Player.Data.Shooting;
 using GlassyCode.CannonDefense.Game.Player.Logic.CannonBall;
