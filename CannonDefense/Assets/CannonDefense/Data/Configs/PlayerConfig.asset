@@ -16,7 +16,7 @@ MonoBehaviour:
     <MaxLevel>k__BackingField: 15
     <RequiredExpToLevelUp>k__BackingField: 3200000064000000fa000000f4010000e8030000d0070000881300000f270000
     <DoesDamageScaleWithLevel>k__BackingField: 1
-    <Damage>k__BackingField: 320000000a0000000f000000
+    <Damage>k__BackingField: 050000000a0000000f000000
     <Health>k__BackingField: 4000
   <Movement>k__BackingField:
     <InitialPosition>k__BackingField: {x: 0, y: 0, z: -14}

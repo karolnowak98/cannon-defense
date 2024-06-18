@@ -37,6 +37,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Skills
             
             Cooldown = Entity.Cooldown[0];
             _cooldownTimer = 0;
+            _cooldownUIRefreshTimer = 0;
             _isProjectileFired = false;
             _isCooldownActive = false;
         }
@@ -59,7 +60,8 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Skills
             if (_cooldownUIRefreshTimer <= 0)
             {
                 _cooldownUIRefreshTimer = Entity.CooldownUIRefreshInterval;
-                _signalBus.TryFire(new SkillCooldownUpdatedSignal { Cooldown = _cooldownTimer, Name = _name });
+                var normalizedCooldown = _cooldownTimer / Cooldown;
+                _signalBus.TryFire(new SkillCooldownUpdatedSignal { Cooldown = normalizedCooldown, Name = _name });
             }
         }
 

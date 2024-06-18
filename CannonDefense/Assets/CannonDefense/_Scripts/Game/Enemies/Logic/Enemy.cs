@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GlassyCode.CannonDefense.Core.Pools.Object;
+using GlassyCode.CannonDefense.Core.Utility;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
@@ -11,6 +12,7 @@ using Object = UnityEngine.Object;
 
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
+    [RequireComponent(typeof(MeshRenderer))]
     public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy
     {
         [SerializeField] private EnemyEntity _entity;
@@ -18,6 +20,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private SignalBus _signalBus;
         private IEnemiesManager _enemiesManager;
         private Rigidbody _rb;
+        private MeshRenderer _meshRenderer;
         private float _currentHealth;
         private float _currentMoveSpeed;
         
@@ -32,7 +35,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus.Subscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.Subscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.Subscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-            _signalBus.Subscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
+            //_signalBus.Subscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
         private void OnDestroy()
@@ -40,12 +43,15 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-            _signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
+            //_signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
         private void Awake()
         {
             TryGetComponent(out _rb);
+            TryGetComponent(out _meshRenderer);
+            
+            _meshRenderer.material.color = Colors.GetRandomColor();
         }
         
         private void OnTriggerEnter(Collider other)

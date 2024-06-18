@@ -22,12 +22,12 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus = signalBus;
             
             Spawner = new EnemySpawner(signalBus, timeController, config, factory, spawningArea);
-            Grid = new EnemyGrid(1);
+            Grid = new EnemyGrid(4);
             
             _signalBus.Subscribe<EnemySpawnedSignal>(AddEnemy);
             _signalBus.Subscribe<EnemyCrossedFinishLine>(RemoveEnemy);
             _signalBus.Subscribe<EnemyDiedSignal>(RemoveEnemy);
-           //_signalBus.Subscribe<SkillProjectileBoomedSignal>(OnSkillBoomed);
+            _signalBus.Subscribe<SkillProjectileBoomedSignal>(OnSkillBoomed);
         }
         
         public void Dispose()
@@ -35,12 +35,17 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus.TryUnsubscribe<EnemySpawnedSignal>(AddEnemy);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(RemoveEnemy);
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(RemoveEnemy);
-            //_signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(OnSkillBoomed);
+            _signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(OnSkillBoomed);
         }
         
         public void Tick()
         {
             Spawner.Tick();
+            
+            foreach (var enemy in Grid.GetAllEnemies())
+            {
+                Grid.UpdateEnemyPosition(enemy);
+            }
         }
         
         private void OnSkillBoomed(SkillProjectileBoomedSignal signal)
