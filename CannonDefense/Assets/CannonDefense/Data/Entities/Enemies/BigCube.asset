@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   <Type>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 10
-  <Health>k__BackingField: 50
+  <MoveSpeed>k__BackingField: 8
+  <MaxHealth>k__BackingField: 50
   <Damage>k__BackingField: 5
   <Score>k__BackingField: 10
   <Experience>k__BackingField: 20
+  <Effects>k__BackingField:
+  - {fileID: 11400000, guid: 89cacfa8e18cbc74a8c2e86ecb26418b, type: 2}

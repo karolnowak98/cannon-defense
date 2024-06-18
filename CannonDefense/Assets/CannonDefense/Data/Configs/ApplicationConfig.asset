@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3902e12f9728d42a9362de47c1c931, type: 3}
   m_Name: ApplicationConfig
   m_EditorClassIdentifier: 
-  _targetFps: 120
+  <TargetFps>k__BackingField: 120

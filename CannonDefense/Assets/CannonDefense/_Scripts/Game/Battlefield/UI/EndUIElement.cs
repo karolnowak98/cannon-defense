@@ -6,7 +6,7 @@ using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Battlefield.UI
 {
-    public class EndUIElement : UIElement
+    public sealed class EndUIElement : UIElement
     {
         [SerializeField] private Button _restartBtn; 
         

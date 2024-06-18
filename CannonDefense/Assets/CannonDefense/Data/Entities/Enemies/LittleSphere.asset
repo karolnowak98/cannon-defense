@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: LittleSphere
   m_EditorClassIdentifier: 
   _id: 0
-  <Type>k__BackingField: 0
-  <MoveSpeed>k__BackingField: 10
-  <Health>k__BackingField: 20
+  <Type>k__BackingField: 3
+  <MoveSpeed>k__BackingField: 15
+  <MaxHealth>k__BackingField: 30
   <Damage>k__BackingField: 5
   <Score>k__BackingField: 8
-  <Experience>k__BackingField: 10
+  <Experience>k__BackingField: 15
+  <Effects>k__BackingField:
+  - {fileID: 11400000, guid: 6da75d638d6f3264ba7770362c6d2871, type: 2}

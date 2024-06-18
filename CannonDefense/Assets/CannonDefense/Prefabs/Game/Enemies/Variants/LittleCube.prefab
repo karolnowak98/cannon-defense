@@ -68,6 +68,10 @@ PrefabInstance:
       propertyPath: _data
       value: 
       objectReference: {fileID: 11400000, guid: 323a10549d8efec49bc7840684da4a9f, type: 2}
+    - target: {fileID: 7572814299010530781, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
+      propertyPath: _entity
+      value: 
+      objectReference: {fileID: 11400000, guid: 323a10549d8efec49bc7840684da4a9f, type: 2}
     - target: {fileID: 8434914716518448379, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
       propertyPath: m_Name
       value: LittleCube

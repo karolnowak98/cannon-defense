@@ -7,5 +7,6 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
         IStatsController Stats { get; }
         void EnableControls();
         void DisableControls();
+        void Reset();
     }
 }

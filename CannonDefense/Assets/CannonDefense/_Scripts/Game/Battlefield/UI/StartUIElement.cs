@@ -6,7 +6,7 @@ using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Battlefield.UI
 {
-    public class StartUIElement : UIElement
+    public sealed class StartUIElement : UIElement
     {
         [SerializeField] private Button _startBtn;
 

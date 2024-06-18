@@ -3,7 +3,7 @@ using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
 {
-    public class BattlefieldInstaller : MonoInstaller
+    public sealed class BattlefieldInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {

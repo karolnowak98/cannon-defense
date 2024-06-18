@@ -4,6 +4,8 @@ using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using GlassyCode.CannonDefense.Game.Player.Data;
 using GlassyCode.CannonDefense.Game.Player.Logic.Movement;
 using GlassyCode.CannonDefense.Game.Player.Logic.Shooting;
+using GlassyCode.CannonDefense.Game.Player.Logic.Signals;
+using GlassyCode.CannonDefense.Game.Player.Logic.Skills;
 using GlassyCode.CannonDefense.Game.Player.Logic.Stats;
 using UnityEngine;
 using Zenject;
@@ -14,38 +16,41 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
     {
         private SignalBus _signalBus;
         
-        public IPlayerConfig Config { get; private set; }
         public IStatsController Stats { get; private set; }
-        public IMovementController Movement { get; private set; }
-        public IShootingController Shooting { get; private set; }
+        public ISkillsController Skills { get; private set; }
+        private IMovementController Movement { get; set; }
+        private IShootingController Shooting { get; set; }
 
         [Inject]
-        private void Construct(SignalBus signalBus, IInputManager inputManager, IPlayerConfig config, Transform transform, Rigidbody rb, Transform cannonBallSpawnPoint)
+        private void Construct(SignalBus signalBus, IInputManager inputManager, IPlayerConfig config, 
+            Transform player, Rigidbody rb, CannonBall.Factory cannonBallFactory, Transform cannonBallSpawnPoint, 
+            OffensiveSkillProjectile.Factory skillProjectile)
         {
             _signalBus = signalBus;
-            Config = config;
             
-            Stats = new StatsController(config.Stats);
-            Movement = new MovementController(inputManager, transform, rb, config.Movement);
-            Shooting = new ShootingController(inputManager, config.Shooting, cannonBallSpawnPoint);
+            Stats = new StatsController(signalBus, config.Stats);
+            Movement = new MovementController(inputManager, player, rb, config.Movement);
+            Shooting = new ShootingController(inputManager, config.Shooting, cannonBallFactory, cannonBallSpawnPoint);
+            Skills = new SkillsController(signalBus, config.OffensiveSkills, skillProjectile, cannonBallSpawnPoint);
             
-            _signalBus.Subscribe<EnemyAttackedSignal>(Stats.EnemyAttackedHandler);
-            _signalBus.Subscribe<EnemyKilledSignal>(Stats.EnemyKilledHandler);
-
-            Reset();
+            _signalBus.Subscribe<EnemyCrossedFinishLine>(Stats.EnemyAttackedHandler);
+            _signalBus.Subscribe<EnemyDiedSignal>(Stats.EnemyKilledHandler);
         }
         
         public void Dispose()
         {
             Movement.Dispose();
+            Skills.Dispose();
+            Shooting.Dispose();
             
-            _signalBus.TryUnsubscribe<EnemyAttackedSignal>(Stats.EnemyAttackedHandler);
-            _signalBus.TryUnsubscribe<EnemyKilledSignal>(Stats.EnemyKilledHandler);
+            _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(Stats.EnemyAttackedHandler);
+            _signalBus.TryUnsubscribe<EnemyDiedSignal>(Stats.EnemyKilledHandler);
         }
 
         public void Tick()
         {
             Movement.Tick();
+            Skills.Tick();
         }
 
         public void FixedTick()
@@ -57,18 +62,23 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
         {
             Movement.Enable();
             Shooting.Enable();
+            Skills.Enable();
         }
         
         public void DisableControls()
         {
             Movement.Disable();
             Shooting.Disable();
+            Skills.Disable();
         }
 
         public void Reset()
         {
             Stats.Reset();
             Movement.ResetPosition();
+            Shooting.ResetCannonBalls();
+            Skills.Reset();
+            _signalBus.TryFire<PlayerResetSignal>();
         }
     }
 }

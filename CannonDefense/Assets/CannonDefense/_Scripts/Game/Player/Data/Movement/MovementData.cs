@@ -9,7 +9,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Data.Movement
         [field: Header("Position"), Tooltip("Initial position of the player.")]
         [field: SerializeField] public Vector3 InitialPosition { get; private set; }
         
-        [field: Header("Movement MoveSpeed"), Tooltip("The base movement speed of the player.")]
+        [field: Header("Movement Speed"), Tooltip("The base movement speed of the player.")]
         [field: SerializeField] public float MoveSpeed { get; private set; }
 
         [field: Tooltip("The maximum movement speed of the player.")]

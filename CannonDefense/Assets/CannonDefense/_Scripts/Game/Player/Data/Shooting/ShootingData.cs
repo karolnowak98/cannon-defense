@@ -6,8 +6,8 @@ namespace GlassyCode.CannonDefense.Game.Player.Data.Shooting
     [Serializable]
     public struct ShootingData
     {
-        [field: Tooltip("Prefab and config of CannonBall with the related component.")]
-        [field: SerializeField] public Logic.CannonBall.CannonBall CannonBall { get; private set; }
+        [field: Tooltip("Prefab and config of OffensiveSkillProjectile with the related component.")]
+        [field: SerializeField] public Logic.Shooting.CannonBall CannonBall { get; private set; }
         
         [field: Header("Cannon Ball Pools"), Tooltip("Default (initial) cannon ball pool size.")]
         [field: SerializeField] public int CannonBallPoolInitialSize { get; private set; }

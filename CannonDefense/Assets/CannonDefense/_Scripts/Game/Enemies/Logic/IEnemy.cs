@@ -1,10 +1,10 @@
-using GlassyCode.CannonDefense.Game.Enemies.Data;
+using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
     public interface IEnemy
     {
-        EnemyType Type { get; }
+        Transform Transform { get; }
         void TakeDamage(int damage);
     }
 }

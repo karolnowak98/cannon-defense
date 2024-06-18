@@ -1,27 +1,35 @@
+using UnityEngine;
+
 namespace GlassyCode.CannonDefense.Game.Player.Logic.Skills
 {
     public abstract class Skill : ISkill
     {
-        protected ISkillEntityData Data { get; private set; }
+        public bool CanUse { get; set; }
+        public Transform Parent { get; set; }
         
-        protected Skill(ISkillEntityData data)
+        public virtual void Tick()
         {
-            Data = data;
+            
         }
 
         public virtual void Enable()
         {
-            Data.InputAction.Enable();
+            CanUse = true;
         }
 
         public virtual void Disable()
         {
-            Data.InputAction.Disable();
+            CanUse = false;
         }
 
-        public virtual void Use()
+        public virtual void Reset()
         {
             
+        }
+
+        public void SetProjectilesParent(Transform parent)
+        {
+            Parent = parent;
         }
     }
 }

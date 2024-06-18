@@ -18,11 +18,5 @@ namespace GlassyCode.CannonDefense.Core.Applications.Logic
         {
             Application.targetFrameRate = _applicationConfig.TargetFps;
         }
-
-        public void QuitApplication()
-        {
-            Debug.Log("Won the game");
-            Application.Quit();
-        }
     }
 }

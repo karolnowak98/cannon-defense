@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: EnemiesConfig
   m_EditorClassIdentifier: 
   <Enemies>k__BackingField:
-  - {fileID: 1967275490201534754, guid: 8c5a4c901f381ee499de621e2af30a83, type: 3}
-  - {fileID: 5016385547219131092, guid: f255af54b6c1cf445b3bb6c3eade8d04, type: 3}
-  - {fileID: 6956153721503886390, guid: 0ec11dd4ba98f7b4baabab1f565b0645, type: 3}
-  - {fileID: 2912199766448577871, guid: 96eadf5feaa79a84badecaa4eb7735a5, type: 3}
-  <SpawnInterval>k__BackingField: 0.01
+  - <Enemy>k__BackingField: {fileID: 6956153721503886390, guid: 0ec11dd4ba98f7b4baabab1f565b0645, type: 3}
+    <SpawnRatio>k__BackingField: 50
+  - <Enemy>k__BackingField: {fileID: 1967275490201534754, guid: 8c5a4c901f381ee499de621e2af30a83, type: 3}
+    <SpawnRatio>k__BackingField: 15
+  - <Enemy>k__BackingField: {fileID: 2912199766448577871, guid: 96eadf5feaa79a84badecaa4eb7735a5, type: 3}
+    <SpawnRatio>k__BackingField: 25
+  - <Enemy>k__BackingField: {fileID: 5016385547219131092, guid: f255af54b6c1cf445b3bb6c3eade8d04, type: 3}
+    <SpawnRatio>k__BackingField: 10
+  <SpawnInterval>k__BackingField: 0.007
   <EnemyPoolInitialSize>k__BackingField: 10
   <EnemyPoolMaxSize>k__BackingField: 10000

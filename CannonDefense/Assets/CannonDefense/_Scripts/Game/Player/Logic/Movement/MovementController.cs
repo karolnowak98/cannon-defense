@@ -25,7 +25,6 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Movement
             _maxMoveSpeed = data.MaxMoveSpeed;
             _moveSpeed = data.MoveSpeed;
             _initialPosition = data.InitialPosition;
-
         }
 
         public void Dispose()

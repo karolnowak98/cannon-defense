@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Core.UI
 {
-    public class UIFadeTmp : UIFadeElement
+    public abstract class UIFadeTmp : UIFadeElement
     {
         [SerializeField] protected TextMeshProUGUI _tmp;
 

@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace GlassyCode.CannonDefense.Core.Pools.Object
@@ -6,5 +7,6 @@ namespace GlassyCode.CannonDefense.Core.Pools.Object
     {
         IObjectPool<T> Pool { get; }
         void Clear();
+        void SetPoolParent(Transform parent);
     }
 }

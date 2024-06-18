@@ -2,7 +2,7 @@ using System;
 
 namespace GlassyCode.CannonDefense.Core.Time
 {
-    public class AutomaticTimer : ITimer
+    public sealed class AutomaticTimer : ITimer
     {
         private readonly ITimeController _timeController;
         private readonly float _countdownTime;
@@ -35,19 +35,19 @@ namespace GlassyCode.CannonDefense.Core.Time
             }
         }
         
-        public virtual void Start()
+        public void Start()
         {
             _isRunning = true;
             OnTimerStarted?.Invoke(_remainingTime);
         }
         
-        public virtual void Stop()
+        public void Stop()
         {
             _isRunning = false;
             OnTimerStopped?.Invoke();
         }
 
-        public virtual void Reset()
+        public void Reset()
         {
             _remainingTime = _countdownTime;
         }

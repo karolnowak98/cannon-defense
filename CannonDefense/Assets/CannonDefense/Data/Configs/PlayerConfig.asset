@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   <Stats>k__BackingField:
-    <Levels>k__BackingField:
-    - <Level>k__BackingField: 1
-      <RequiredExpForLevelUp>k__BackingField: 100
-    - <Level>k__BackingField: 2
-      <RequiredExpForLevelUp>k__BackingField: 200
-    - <Level>k__BackingField: 3
-      <RequiredExpForLevelUp>k__BackingField: 500
-    <Health>k__BackingField: 100
+    <MaxLevel>k__BackingField: 15
+    <RequiredExpToLevelUp>k__BackingField: 3200000064000000fa000000f4010000e8030000d0070000881300000f270000
+    <DoesDamageScaleWithLevel>k__BackingField: 1
+    <Damage>k__BackingField: 320000000a0000000f000000
+    <Health>k__BackingField: 4000
   <Movement>k__BackingField:
     <InitialPosition>k__BackingField: {x: 0, y: 0, z: -14}
     <MoveSpeed>k__BackingField: 50

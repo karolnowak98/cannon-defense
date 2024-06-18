@@ -7,6 +7,7 @@ namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
         event Action OnStartBattle;
         event Action OnEndBattle;
         void StartBattle();
+        void EndBattle();
         void RestartBattle();
     }
 }

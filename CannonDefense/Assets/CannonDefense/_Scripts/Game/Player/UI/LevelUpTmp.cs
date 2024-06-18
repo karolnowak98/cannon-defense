@@ -1,29 +1,31 @@
 using GlassyCode.CannonDefense.Core.UI;
-using GlassyCode.CannonDefense.Game.Player.Logic;
+using GlassyCode.CannonDefense.Game.Player.Logic.Signals;
 using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Player.UI
 {
-    public class LevelUpTmp : UIFadeTmp
+    public sealed class LevelUpTmp : UIFadeTmp
     {
-        private IPlayerManager _playerManager;
+        private SignalBus _signalBus;
 
         [Inject]
-        private void Construct(IPlayerManager playersManager)
+        private void Construct(SignalBus signalBus)
         {
-            _playerManager = playersManager;
+            _signalBus = signalBus;
 
-            _playerManager.Stats.OnLevelUp += UpdateLevelUpTmp;
+            _signalBus.Subscribe<PlayerDiedSignal>(Hide);
+            _signalBus.Subscribe<PlayerLeveledUpSignal>(UpdateLevelUpTmp);
         }
 
         private void OnDestroy()
         {
-            _playerManager.Stats.OnLevelUp -= UpdateLevelUpTmp;
+            _signalBus.TryUnsubscribe<PlayerDiedSignal>(Hide);
+            _signalBus.TryUnsubscribe<PlayerLeveledUpSignal>(UpdateLevelUpTmp);
         }
 
-        private void UpdateLevelUpTmp(int level)
+        private void UpdateLevelUpTmp(PlayerLeveledUpSignal signal)
         {
-            SetText($"Level {level} Achieved!");
+            SetText($"Level {signal.Level} Achieved!");
             Show();
         }
     }

@@ -1,68 +1,69 @@
-using System;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using GlassyCode.CannonDefense.Game.Player.Data.Stats;
+using GlassyCode.CannonDefense.Game.Player.Logic.Signals;
+using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Player.Logic.Stats
 {
-    public class StatsController : IStatsController
+    public sealed class StatsController : IStatsController
     {
-        private readonly PlayerLevel[] _levelsData;
-        private readonly int _initHealth;
+        private readonly SignalBus _signalBus;
+        private readonly StatsData _statsData;
         
-        private int _health;
-        private int _score;
-        private int _experience;
-        private int _level;
-        
-        public event Action<int> OnScoreUpdated;
-        public event Action<int> OnLevelUp;
-        public event Action OnPlayerDied;
-        
-        public StatsController(StatsData statsData)
-        {
-            _initHealth = statsData.Health;
-            _levelsData = statsData.Levels;
-        }
+        private Stats _currentStats;
 
+        public int CurrentDamage => _currentStats.Damage;
+        
+        public StatsController(SignalBus signalBus, StatsData statsData)
+        {
+            _signalBus = signalBus;
+            _statsData = statsData;
+
+            InitStats();
+        }
+        
         public void Reset()
         {
-            _health = _initHealth;
-            _score = 0;
-            _experience = 0;
-            _level = 1;
+            InitStats();
+            _signalBus.TryFire(new PlayerStatsResetSignal { Stats = _currentStats });
         }
 
-        public void EnemyAttackedHandler(EnemyAttackedSignal enemyAttackedSignal)
+        public void EnemyAttackedHandler(EnemyCrossedFinishLine enemyCrossedFinishLine)
         {
-            _health -= enemyAttackedSignal.Damage;
-            CheckIfDied();
-        }
-
-        public void EnemyKilledHandler(EnemyKilledSignal enemyKilledSignal)
-        {
-            _score += enemyKilledSignal.Score;
-            _experience += enemyKilledSignal.Experience;
+            _currentStats.DecreaseHealth(enemyCrossedFinishLine.Damage);
             
-            CheckForLevelUp();
-            OnScoreUpdated?.Invoke(_score);
+            if (_currentStats.IsDied)
+            {
+                _signalBus.TryFire(new PlayerDiedSignal());
+            }
+        }
+
+        public void EnemyKilledHandler(EnemyDiedSignal enemyDiedSignal)
+        {
+            _currentStats.AddScore(enemyDiedSignal.Score);
+            _currentStats.AddExperience(enemyDiedSignal.Experience);
+
+            var levelsUp = _currentStats.LevelUp(_statsData);
+            
+            if (levelsUp > 0)
+            {
+                _signalBus.TryFire(new PlayerLeveledUpSignal { Level = _currentStats.Level });
+            }
+            
+            _signalBus.TryFire(new PlayerScoreUpdatedSignal{Score = _currentStats.Score});
         }
         
-        private void CheckForLevelUp()
+        private void InitStats()
         {
-            while (_level < _levelsData.Length && _experience >= _levelsData[_level - 1].RequiredExpForLevelUp)
+            _currentStats = new Stats
             {
-                _experience -= _levelsData[_level - 1].RequiredExpForLevelUp;
-                _level++;
-                OnLevelUp?.Invoke(_level);
-            }
-        }
+                Health = _statsData.Health,
+                Level = 1,
+                Score = 0,
+                Experience = 0,
+            };
 
-        private void CheckIfDied()
-        {
-            if (_health <= 0)
-            {
-                OnPlayerDied?.Invoke();
-            }
+            _currentStats.Damage = _currentStats.GetDamage(_statsData.Damage);
         }
     }
 }

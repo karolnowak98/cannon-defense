@@ -1,24 +1,36 @@
 using GlassyCode.CannonDefense.Core.UI;
-using GlassyCode.CannonDefense.Game.Player.Logic;
+using GlassyCode.CannonDefense.Game.Player.Logic.Signals;
 using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Player.UI
 {
-    public class ScoreTmp : UITmp
+    public sealed class ScoreTmp : UITmp
     {
-        private IPlayerManager _playerManager;
+        private SignalBus _signalBus;
 
         [Inject]
-        private void Construct(IPlayerManager playersManager)
+        private void Construct(SignalBus signalBus)
         {
-            _playerManager = playersManager;
+            _signalBus = signalBus;
 
-            _playerManager.Stats.OnScoreUpdated += SetText;
+            _signalBus.Subscribe<PlayerScoreUpdatedSignal>(SetScore);
+            _signalBus.Subscribe<PlayerStatsResetSignal>(ResetScore);
         }
 
         private void OnDestroy()
         {
-            _playerManager.Stats.OnScoreUpdated -= SetText;
+            _signalBus.TryUnsubscribe<PlayerScoreUpdatedSignal>(SetScore);
+            _signalBus.TryUnsubscribe<PlayerStatsResetSignal>(ResetScore);
+        }
+
+        private void ResetScore(PlayerStatsResetSignal signal)
+        {
+            SetText(signal.Stats.Score);
+        }
+
+        private void SetScore(PlayerScoreUpdatedSignal signal)
+        {
+            SetText(signal.Score);
         }
     }
 }

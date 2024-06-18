@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   <Name>k__BackingField: 0
-  <UseType>k__BackingField: 0
   <InputAction>k__BackingField:
     m_Name: Input
     m_Type: 0
@@ -23,38 +22,26 @@ MonoBehaviour:
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings:
-    - m_Name: 2D Vector
-      m_Id: 9dd7d738-3c79-461f-8c7a-6376f8c9a598
-      m_Path: 2DVector
+    - m_Name: 
+      m_Id: 8a2e1658-6f3f-4c9f-aba8-69f4e0ec70ae
+      m_Path: <Keyboard>/y
       m_Interactions: 
       m_Processors: 
       m_Groups: 
       m_Action: Input
-      m_Flags: 4
-    - m_Name: left
-      m_Id: e7fdea80-3480-4aeb-bdad-4483ec086ea4
-      m_Path: <Keyboard>/leftArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Input
-      m_Flags: 8
-    - m_Name: right
-      m_Id: aa7bc207-cc85-4ee9-863b-029a868e2761
-      m_Path: <Keyboard>/rightArrow
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Input
-      m_Flags: 8
+      m_Flags: 0
     m_Flags: 0
-  <IsCooldownScalingByLevel>k__BackingField: 1
+  <DoesCooldownScaleWithLevel>k__BackingField: 1
   <Cooldown>k__BackingField:
-  - 5
-  - 25
-  <ProjectilePrefab>k__BackingField: {fileID: 1633118654912580072, guid: e99127251ec983a48a9ce7df328519ae, type: 3}
-  <ProjectileSpeed>k__BackingField: 1
-  <IsDamageScalingByLevel>k__BackingField: 0
-  <Damage>k__BackingField: 0a000000
-  <IsAreaScalingByLevel>k__BackingField: 0
-  <Area>k__BackingField: []
+  - 2
+  - 1
+  - 0.2
+  <CooldownUIRefreshInterval>k__BackingField: 0.01
+  <OffensiveSkillProjectile>k__BackingField: {fileID: 8403648170558413611, guid: ca729e1f1a2d4474d9e791e5842f51f5, type: 3}
+  <IsDamageScalingByLevel>k__BackingField: 1
+  <Damage>k__BackingField: 3200000064000000c8000000
+  <IsAreaScalingByLevel>k__BackingField: 1
+  <Area>k__BackingField:
+  - 200
+  - 350
+  - 450

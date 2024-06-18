@@ -5,6 +5,7 @@ namespace GlassyCode.CannonDefense.Core.Utility
     public abstract class GlassyMonoBehaviour : MonoBehaviour
     {
         public bool IsActive => gameObject.activeSelf;
+        public Transform Transform => transform; 
         
         public void Enable()
         {
@@ -26,10 +27,25 @@ namespace GlassyCode.CannonDefense.Core.Utility
             transform.rotation = rotation;
         }
 
-        public void Destroy()
+        public virtual void Destroy()
         {
-            Debug.Log("Destroying object: " + gameObject.name);
-            Destroy(gameObject);
+            if (IsActive)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        public void SetParent(Transform parent)
+        {
+            if (IsActive)
+            {
+                transform.parent = parent;
+            }
+        }
+        
+        public void DestroyImmediate()
+        {
+            DestroyImmediate(gameObject);
         }
 
         public void Create()

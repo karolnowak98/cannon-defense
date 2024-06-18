@@ -5,6 +5,7 @@ namespace GlassyCode.CannonDefense.Core.Utility
         public const string Configs = "Configs/";
         
         public const string Entities = "Entities/";
-        public const string Skills = "Entities/Skills/";
+        public const string Enemies = "Entities/Enemies/";
+        public const string Skills = "Entities/Player/Skills";
     }
 }

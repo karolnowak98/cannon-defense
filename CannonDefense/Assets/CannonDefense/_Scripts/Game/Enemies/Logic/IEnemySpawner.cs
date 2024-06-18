@@ -5,6 +5,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         void Tick();
         void StartSpawning();
         void StopSpawning();
-        void ClearPools();
+        void RemoveEnemies();
     }
 }
