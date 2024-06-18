@@ -34,7 +34,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Stats
             
             if (_currentStats.IsDied)
             {
-                _signalBus.TryFire(new PlayerDiedSignal());
+                _signalBus.TryFire(new PlayerDiedSignal {Score = _currentStats.Score});
             }
         }
 

@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e7c3f660-85cf-41da-81db-94f5e05336d2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Core/Input/Controls.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Core/Input/Controls.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Enemies/Logic/EnemyGrid.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Enemies/Logic/EnemyGrid.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.CannonDefense/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CannonDefense/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Battlefield/UI/EndUIElement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Battlefield/UI/EndUIElement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Enemies/Logic/EnemiesManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Enemies/Logic/EnemiesManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Player/Logic/Signals/PlayerDiedSignal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Player/Logic/Signals/PlayerDiedSignal.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Player/Logic/Stats/StatsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/CannonDefense/_Scripts/Game/Player/Logic/Stats/StatsController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
