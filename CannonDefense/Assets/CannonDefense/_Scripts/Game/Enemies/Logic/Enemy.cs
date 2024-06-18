@@ -18,7 +18,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         [SerializeField] private EnemyEntity _entity;
 
         private SignalBus _signalBus;
-        private IEnemiesManager _enemiesManager;
         private Rigidbody _rb;
         private MeshRenderer _meshRenderer;
         private float _currentHealth;
@@ -27,15 +26,14 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         public EnemyType Type => _entity.Type;
 
         [Inject]
-        private void Construct(SignalBus signalBus, IEnemiesManager manager)
+        private void Construct(SignalBus signalBus)
         {
             _signalBus = signalBus;
-            _enemiesManager = manager;
             
             _signalBus.Subscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.Subscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.Subscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-            //_signalBus.Subscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
+            _signalBus.Subscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
         private void OnDestroy()
@@ -43,7 +41,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-            //_signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
+            _signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
         private void Awake()
@@ -58,7 +56,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             if (!other.CompareTag("Finish")) return;
             
-            _signalBus.TryFire(new EnemyCrossedFinishLine { Enemy = this, Effects = _entity.Effects, Damage = _entity.Damage });
+            _signalBus.TryFire(new EnemyCrossedFinishLine { Effects = _entity.Effects, Damage = _entity.Damage });
             
             if (IsActive)
             {
@@ -91,7 +89,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             
             if (_currentHealth <= 0)
             {
-                _signalBus.TryFire(new EnemyDiedSignal { Enemy = this, Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
+                _signalBus.TryFire(new EnemyDiedSignal { Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
                 if (IsActive)
                 {
                     Pool.Release(this);
