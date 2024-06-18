@@ -14,9 +14,6 @@ namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
         private IPlayerManager _playerManager;
         private IEnemiesManager _enemiesManager;
 
-        public event Action OnStartBattle;
-        public event Action OnEndBattle;
-        
         [Inject]
         private void Construct(SignalBus signalBus, ITimeController timeController, IPlayerManager playerManager, IEnemiesManager enemiesManager)
         {
@@ -38,7 +35,6 @@ namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
             _enemiesManager.Spawner.StartSpawning();
             _playerManager.EnableControls();
             _timeController.Resume();
-            OnStartBattle?.Invoke();
         }
 
         public void EndBattle()
@@ -46,7 +42,6 @@ namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
             _timeController.Pause();
             _playerManager.DisableControls();
             _enemiesManager.Spawner.StopSpawning();
-            OnEndBattle?.Invoke();
         }
         
         public void RestartBattle()

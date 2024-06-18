@@ -70,3 +70,51 @@ CannonDefense/[Aa]ssets/[Aa]ddressable[Aa]ssets[Dd]ata/*/*.bin*
 # Temporary auto-generated Android Assets
 CannonDefense/[Aa]ssets/[Ss]treamingAssets/aa.meta
 CannonDefense/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore Rider / IntelliJ IDEA project files
+.idea/
+*.iml
+*.iws
+out/
+
+# Ignore Rider workspace files
+CannonDefense/.idea/.idea.CannonDefense/.idea/workspace.xml
+*.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries
+.idea/shelf
+
+# Ignore specific Rider directories and files
+.idea/assetWizardData/
+.idea/.idea.*
+.idea/codeStyles/
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/projectCodeStyle.xml
+.idea/scopes/
+.idea/uiDesigner.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/
+.idea/gradle.xml
+.idea/libraries/
+.idea/compiler.xml
+.idea/deployment.xml
+.idea/jarRepositories.xml
+.idea/kotlinc.xml
+.idea/modules/
+.idea/vcs.xml
+.idea/runConfigurations/
+
+# Ignore Unity specific Rider files
+.vscode/
+.vscode/*
+*.unityproj
+*.sln
+*.csproj
+.DS_Store
+*.tmproj
+*.tmproject
+*.tmproj.user
+mono_crash.*
+CannonDefense/.idea/.idea.CannonDefense/.idea/workspace.xml
