@@ -6,7 +6,6 @@ using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using UnityEngine;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
@@ -16,12 +15,10 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private readonly Dictionary<EnemyType, IGlassyObjectPool<Enemy>> _enemyPools = new();
         private readonly IEnemiesConfig _config;
         private readonly ITimer _timer;
-        private SignalBus _signalBus;
         private Transform _spawningEnemyParent;
 
-        public EnemySpawner(SignalBus signalBus, ITimeController timeController, IEnemiesConfig config, Enemy.Factory factory, BoxCollider spawningArea)
+        public EnemySpawner(ITimeController timeController, IEnemiesConfig config, Enemy.Factory factory, BoxCollider spawningArea)
         {
-            _signalBus = signalBus;
             _config = config;
             _spawningEnemyParent = new GameObject(nameof(_spawningEnemyParent)).transform;
             _timer = new AutomaticTimer(timeController, config.SpawnInterval);
@@ -73,7 +70,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private void SpawnEnemy()
         {
             var enemy = _enemyPools[_config.GetRandomEnemyName()].Pool.Get();
-            _signalBus.TryFire(new EnemySpawnedSignal { Enemy = enemy });
         }
     }
 }

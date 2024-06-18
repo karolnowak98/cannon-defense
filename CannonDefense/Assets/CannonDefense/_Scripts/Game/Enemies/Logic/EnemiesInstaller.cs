@@ -16,7 +16,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             Container.Bind<IEnemiesConfig>().To<EnemiesConfig>().FromInstance(_config).AsSingle();
 
-            Container.Bind(typeof(EnemiesManager), typeof(IEnemiesManager), typeof(ITickable), typeof(IDisposable))
+            Container.Bind(typeof(EnemiesManager), typeof(IEnemiesManager), typeof(ITickable))
                 .To<EnemiesManager>()
                 .AsSingle()
                 .WithArguments(_spawningArea);
@@ -30,7 +30,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             Container.DeclareSignal<EnemyCrossedFinishLine>();
             Container.DeclareSignal<EnemyDiedSignal>();
             Container.DeclareSignal<EnemyWoundedSignal>();
-            Container.DeclareSignal<EnemySpawnedSignal>();
         }
 
         private void BindFactories()
