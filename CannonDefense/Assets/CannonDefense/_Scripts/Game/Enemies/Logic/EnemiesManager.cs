@@ -7,34 +7,19 @@ using Zenject;
 
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
-    public sealed class EnemiesManager : IEnemiesManager, ITickable, IDisposable
+    public sealed class EnemiesManager : IEnemiesManager, ITickable
     {
-        private SignalBus _signalBus;
-        
         public IEnemySpawner Spawner { get; private set; } 
         
         [Inject]
-        private void Construct(SignalBus signalBus, ITimeController timeController, IEnemiesConfig config, Enemy.Factory factory, BoxCollider spawningArea)
+        private void Construct(ITimeController timeController, IEnemiesConfig config, Enemy.Factory factory, BoxCollider spawningArea)
         {
             Spawner = new EnemySpawner(timeController, config, factory, spawningArea);
-            
-            _signalBus = signalBus;
-            _signalBus.Subscribe<SkillProjectileBoomedSignal>(RemoveEnemies);
-        }
-        
-        public void Dispose()
-        {
-            _signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(RemoveEnemies);
         }
         
         public void Tick()
         {
             Spawner.Tick();
-        }
-
-        private void RemoveEnemies(SkillProjectileBoomedSignal signal)
-        {
-            
         }
     }
 }

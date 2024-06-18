@@ -21,6 +21,6 @@ MonoBehaviour:
     <SpawnRatio>k__BackingField: 25
   - <Enemy>k__BackingField: {fileID: 5016385547219131092, guid: f255af54b6c1cf445b3bb6c3eade8d04, type: 3}
     <SpawnRatio>k__BackingField: 10
-  <SpawnInterval>k__BackingField: 0.007
-  <EnemyPoolInitialSize>k__BackingField: 10
+  <SpawnInterval>k__BackingField: 0.2
+  <EnemyPoolInitialSize>k__BackingField: 200
   <EnemyPoolMaxSize>k__BackingField: 10000
