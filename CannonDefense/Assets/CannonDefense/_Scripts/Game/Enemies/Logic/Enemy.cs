@@ -66,9 +66,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void TakeDamageIfInRange(SkillProjectileBoomedSignal signal)
         {
-            var distance = Vector3.Distance(transform.position, signal.ExplosionCenter);
-        
-            if (distance <= signal.Radius)
+            var distance = (transform.position - signal.ExplosionCenter).sqrMagnitude;
+            
+            if (distance <= signal.Radius * signal.Radius)
             {
                 TakeDamage(signal.Damage);
             }
