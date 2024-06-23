@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic;
 using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Core.Utility;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
-using GlassyCode.CannonDefense.Game.Player.Logic.Skills.Signals;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -13,27 +14,30 @@ using Object = UnityEngine.Object;
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
     [RequireComponent(typeof(MeshRenderer))]
-    public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy
+    public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy, ISpatialObject
     {
         [SerializeField] private EnemyEntity _entity;
 
         private SignalBus _signalBus;
+        private IQuadtree _quadtree;
         private Rigidbody _rb;
         private MeshRenderer _meshRenderer;
         private float _currentHealth;
         private float _currentMoveSpeed;
         
         public EnemyType Type => _entity.Type;
+        public Vector3 Position => Transform.position;
+        public Rect Rect => _meshRenderer.bounds.GetRect();
 
         [Inject]
-        private void Construct(SignalBus signalBus)
+        private void Construct(SignalBus signalBus, IQuadtree quadtree)
         {
             _signalBus = signalBus;
+            _quadtree = quadtree;
             
             _signalBus.Subscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.Subscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.Subscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-            _signalBus.Subscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
         private void OnDestroy()
@@ -41,7 +45,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-            _signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
         private void Awake()
@@ -50,8 +53,14 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             TryGetComponent(out _meshRenderer);
             
             _meshRenderer.material.color = Colors.GetRandomColor();
+            _quadtree.AddObject(this);
         }
-        
+
+        private void FixedUpdate()
+        {
+            _quadtree.UpdateObjectPosition(this);
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Finish")) return;
@@ -61,16 +70,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             if (IsActive)
             {
                 Pool.Release(this);
-            }
-        }
-        
-        private void TakeDamageIfInRange(SkillProjectileBoomedSignal signal)
-        {
-            var distance = (transform.position - signal.ExplosionCenter).sqrMagnitude;
-            
-            if (distance <= signal.Radius * signal.Radius)
-            {
-                TakeDamage(signal.Damage);
             }
         }
         

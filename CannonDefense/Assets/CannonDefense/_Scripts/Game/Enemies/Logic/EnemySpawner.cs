@@ -4,7 +4,6 @@ using GlassyCode.CannonDefense.Core.Pools.Object;
 using GlassyCode.CannonDefense.Core.Time;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
-using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
