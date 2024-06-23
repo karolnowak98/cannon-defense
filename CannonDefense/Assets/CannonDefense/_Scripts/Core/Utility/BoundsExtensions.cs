@@ -9,7 +9,7 @@ namespace GlassyCode.CannonDefense.Core.Utility
             var size = bounds.size;
             var min = bounds.min;
 
-            return new Rect(min.x, min.y, size.x, size.y);
+            return new Rect(min.x, min.z, size.x, size.z);
         }
     }
 }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: QuadtreeConfig
   m_EditorClassIdentifier: 
   <Depth>k__BackingField: 5
-  <MinNodeSize>k__BackingField: 2
-  <PreferredMaxObjectsPerNode>k__BackingField: 100
+  <MinNodeSize>k__BackingField: 5
+  <PreferredMaxObjectsPerNode>k__BackingField: 200
