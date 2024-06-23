@@ -40,6 +40,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             var location = new Vector2(signal.ExplosionCenter.x, signal.ExplosionCenter.z);
             var objects = _quadtree.FindObjectsInRange(location, (int) signal.Radius);
 
+            Debug.Log($"Explosion at {location} with radius {signal.Radius} found {objects.Count()} objects.");
+            
             foreach (var enemy in objects.Cast<IEnemy>())
             {
                 enemy.TakeDamage(signal.Damage);

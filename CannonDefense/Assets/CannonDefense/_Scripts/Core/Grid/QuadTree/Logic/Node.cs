@@ -69,12 +69,31 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }
         }
         
+        public void RemoveObject(ISpatialObject obj)
+        {
+            if (Objects.Contains(obj))
+            {
+                Objects.Remove(obj);
+            }
+
+            if (Children != null)
+            {
+                foreach (var child in Children)
+                {
+                    if (child.Rect.Contains(obj.Position))
+                    {
+                        child.RemoveObject(obj);
+                    }
+                }
+            }
+        }
+        
         public bool Overlaps(Rect other)
         {
             return other.Overlaps(other);
         }
 
-        public HashSet<ISpatialObject> FindDataInRect(Rect searchRect)
+        public HashSet<ISpatialObject> FindObjectsInRange(Rect searchRect)
         {
             var objects = new HashSet<ISpatialObject>();
             
@@ -90,7 +109,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             {
                 if (child.Overlaps(searchRect))
                 {
-                    return child.FindDataInRect(searchRect);
+                    return child.FindObjectsInRange(searchRect);
                 }
             }
 

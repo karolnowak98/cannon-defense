@@ -24,10 +24,11 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private MeshRenderer _meshRenderer;
         private float _currentHealth;
         private float _currentMoveSpeed;
+        private Bounds _bounds;
         
         public EnemyType Type => _entity.Type;
-        public Vector3 Position => Transform.position;
-        public Rect Rect => _meshRenderer.bounds.GetRect();
+        public Vector2 Position => new(transform.position.x, transform.position.z);
+        public Rect Rect => _bounds.GetRect();
 
         [Inject]
         private void Construct(SignalBus signalBus, IQuadtree quadtree)
@@ -42,6 +43,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void OnDestroy()
         {
+            _quadtree.RemoveObject(this);
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
@@ -51,8 +53,12 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             TryGetComponent(out _rb);
             TryGetComponent(out _meshRenderer);
-            
+        }
+
+        private void Start()
+        {
             _meshRenderer.material.color = Colors.GetRandomColor();
+            _bounds = _meshRenderer.bounds;
             _quadtree.AddObject(this);
         }
 
@@ -88,6 +94,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             
             if (_currentHealth <= 0)
             {
+                Debug.Log("Enemy died.");
                 _signalBus.TryFire(new EnemyDiedSignal { Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
                 if (IsActive)
                 {

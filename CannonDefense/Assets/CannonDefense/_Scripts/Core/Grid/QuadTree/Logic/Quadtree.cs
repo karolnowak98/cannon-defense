@@ -30,6 +30,11 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         {
             Root.AddObject(this, obj);
         }
+        
+        public void RemoveObject(ISpatialObject obj)
+        {
+            Root.RemoveObject(obj);
+        }
 
         public void AddObjects(IEnumerable<ISpatialObject> objects)
         {
@@ -43,8 +48,9 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         {
             var distance = radius * 2;
             var searchRect = new Rect(searchLocation.x - radius, searchLocation.y - radius, distance, distance);
-
-            return Root.FindDataInRect(searchRect);
+            var objects = Root.FindObjectsInRange(searchRect);
+            objects.RemoveWhere(x => (searchLocation - x.Position).sqrMagnitude > distance);
+            return objects;
         }
         
         public Node? FindNodeForObject(ISpatialObject obj)
@@ -76,8 +82,11 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         public void UpdateObjectPosition(ISpatialObject obj)
         {
             var node = FindNodeForObject(obj);
-
-            node?.AddObject(this, obj);
+            if (node != null)
+            {
+                node.Value.RemoveObject(obj);
+                AddObject(obj);
+            }
         }
     }
 }

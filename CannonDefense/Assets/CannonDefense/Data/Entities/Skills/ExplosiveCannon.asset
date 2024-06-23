@@ -39,9 +39,9 @@ MonoBehaviour:
   <CooldownUIRefreshInterval>k__BackingField: 0.01
   <OffensiveSkillProjectile>k__BackingField: {fileID: 8403648170558413611, guid: ca729e1f1a2d4474d9e791e5842f51f5, type: 3}
   <IsDamageScalingByLevel>k__BackingField: 1
-  <Damage>k__BackingField: 3200000064000000c8000000
+  <Damage>k__BackingField: c2010000c2010000c2010000
   <IsAreaScalingByLevel>k__BackingField: 1
   <Area>k__BackingField:
-  - 200
-  - 350
-  - 450
+  - 1000
+  - 1000
+  - 1000

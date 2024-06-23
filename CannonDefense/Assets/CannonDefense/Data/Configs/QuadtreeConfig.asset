@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c034b329050a49539cb4fd2f8ed88f8b, type: 3}
   m_Name: QuadtreeConfig
   m_EditorClassIdentifier: 
-  <Depth>k__BackingField: 2
+  <Depth>k__BackingField: 5
+  <MinNodeSize>k__BackingField: 2
+  <PreferredMaxObjectsPerNode>k__BackingField: 100
