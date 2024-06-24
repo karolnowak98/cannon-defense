@@ -5,13 +5,13 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
     public interface IQuadtree
     {
-        Node Root { get; }
+        int PreferredNumberOfElementsInNode { get; }
         int MinNodeSize { get; }
-        int PreferredMaxObjectsPerNode { get; }
-        void AddObject(ISpatialObject obj);
-        void RemoveObject(ISpatialObject obj);
-        void AddObjects(IEnumerable<ISpatialObject> objects);
-        IEnumerable<ISpatialObject> FindObjectsInRange(Vector2 searchLocation, int radius);
-        void UpdateObjectPosition(ISpatialObject obj);
+        void AddElement(IElement element);
+        void RemoveElement(IElement element);
+        void AddElements(IEnumerable<IElement> elements);
+        void RemoveElements(IEnumerable<IElement> elements);
+        void UpdateObjectPosition(IElement element);
+        IEnumerable<IElement> GetElementsInRange(Vector2 searchCenter, int radius);
     }
 }

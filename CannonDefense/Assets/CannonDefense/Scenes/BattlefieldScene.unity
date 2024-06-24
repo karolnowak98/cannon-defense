@@ -133,7 +133,7 @@ MeshCollider:
   m_CorrespondingSourceObject: {fileID: 4231482807163618958, guid: 909a52c0ff61a074ba5e9abaecfd30b0, type: 3}
   m_PrefabInstance: {fileID: 3656035470002198747}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &310436329
+--- !u!114 &310436327
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -145,7 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86782967d33a411bb7757f4047beb158, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _depth: 2
+  <PreferredNumberOfElementsInNode>k__BackingField: 25
+  <MinNodeSize>k__BackingField: 2
+  <Depth>k__BackingField: 4
 --- !u!54 &552735000 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 8715447335355186473, guid: 24d1a7571b2af4742bfa8f82f9d8dc8a, type: 3}
@@ -991,7 +993,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1492793113088618878, guid: 909a52c0ff61a074ba5e9abaecfd30b0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 310436329}
+      addedObject: {fileID: 310436327}
   m_SourcePrefab: {fileID: 100100000, guid: 909a52c0ff61a074ba5e9abaecfd30b0, type: 3}
 --- !u!1001 &5918392499155743268
 PrefabInstance:

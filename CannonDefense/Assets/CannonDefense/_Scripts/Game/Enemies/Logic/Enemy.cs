@@ -28,7 +28,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         public EnemyType Type => _entity.Type;
         public Vector2 Position => new(transform.position.x, transform.position.z);
-        public Rect Rect => _bounds.GetRect();
+        public Rect Rect => _bounds.GetXZRect();
 
         [Inject]
         private void Construct(SignalBus signalBus, IQuadtree quadtree)
