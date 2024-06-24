@@ -1,4 +1,3 @@
-using System;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using UnityEngine;

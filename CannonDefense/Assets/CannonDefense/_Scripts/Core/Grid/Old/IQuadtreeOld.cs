@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using UnityEngine;
 
-namespace GlassyCode.CannonDefense.Core.Grid.Quadtreev2
+namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
-    public interface IQuadtreeMono
+    public interface IQuadtreeOld
     {
         int PreferredNumberOfElementsInNode { get; }
         int MinNodeSize { get; }
@@ -14,4 +14,4 @@ namespace GlassyCode.CannonDefense.Core.Grid.Quadtreev2
         void UpdateObjectPosition(IElement element);
         IEnumerable<IElement> GetElementsInRange(Vector2 searchCenter, int radius);
     }
-}
+}*/

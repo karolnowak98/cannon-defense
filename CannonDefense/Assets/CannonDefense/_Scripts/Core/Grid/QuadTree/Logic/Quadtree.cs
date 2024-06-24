@@ -7,58 +7,75 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
     public sealed class Quadtree : IQuadtree
     {
-        public Node Root { get; private set; }
+        public int PreferredNumberOfElementsInNode { get; private set; }
         public int MinNodeSize { get; private set; }
-        public int PreferredMaxObjectsPerNode { get; private set; }
+
+        private Node _root;
 
         [Inject]
         private void Construct(IQuadtreeConfig config, Collider collider)
         {
-            MinNodeSize = config.MinNodeSize;
-            PreferredMaxObjectsPerNode = config.PreferredMaxObjectsPerNode;
+            var bounds = collider.bounds;
             
-            Init(config.Depth, collider.bounds);
+            MinNodeSize = config.MinNodeSize;
+            PreferredNumberOfElementsInNode = config.PreferredMaxObjectsPerNode;
+            _root = new Node(new Rect(bounds.min.x, bounds.min.z, bounds.size.x, bounds.size.z), config.Depth);
         }
 
-        public void Init(int depth, Bounds bounds)
+        public void AddElement(IQuadtreeElement quadtreeElement)
         {
-            var rect = new Rect(bounds.min.x, bounds.min.z, bounds.size.x, bounds.size.z);
-            Root = new Node(rect, depth);
-        }
-
-        public void AddObject(ISpatialObject obj)
-        {
-            Root.AddObject(this, obj);
+            _root.AddElement(this, quadtreeElement);
         }
         
-        public void RemoveObject(ISpatialObject obj)
+        public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
-            Root.RemoveObject(obj);
+            _root.RemoveElement(quadtreeElement);
         }
 
-        public void AddObjects(IEnumerable<ISpatialObject> objects)
+        public void AddElements(IEnumerable<IQuadtreeElement> elements)
         {
-            foreach (var obj in objects)
+            foreach (var element in elements)
             {
-                AddObject(obj);
+                AddElement(element);
             }
         }
-
-        public IEnumerable<ISpatialObject> FindObjectsInRange(Vector2 searchLocation, int radius)
+        
+        public void RemoveElements(IEnumerable<IQuadtreeElement> elements)
         {
-            var distance = radius * 2;
-            var searchRect = new Rect(searchLocation.x - radius, searchLocation.y - radius, distance, distance);
-            var objects = Root.FindObjectsInRange(searchRect);
-            objects.RemoveWhere(x => (searchLocation - x.Position).sqrMagnitude > distance);
-            return objects;
+            foreach (var element in elements)
+            {
+                RemoveElement(element);
+            }            
         }
         
-        public Node? FindNodeForObject(ISpatialObject obj)
+        public void UpdateObjectPosition(IQuadtreeElement quadtreeElement)
         {
-            return FindNodeForObject(Root, obj);
+            var node = GetNodeForElement(quadtreeElement);
+
+            if (node == null)
+            {
+                return;
+            }
+            
+            node.Value.RemoveElement(quadtreeElement);
+            AddElement(quadtreeElement);
+        }
+        
+        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius)
+        {
+            var distance = radius * 2;
+            var searchRect = new Rect(searchCenter.x - radius, searchCenter.y - radius, distance, distance);
+            var elements = _root.FindElementsInRect(searchRect);
+            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > distance);
+            return elements;
+        }
+        
+        /*public NodeOld? FindNodeForObject(ISpatialObject obj)
+        {
+            return FindNodeForObject(_root, obj);
         }
 
-        private Node? FindNodeForObject(Node currentNode, ISpatialObject obj)
+        private NodeOld? FindNodeForObject(NodeOld currentNode, ISpatialObject obj)
         {
             if (currentNode.Rect.Contains(obj.Position))
             {
@@ -77,16 +94,16 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }
         
             return currentNode; 
-        }
-
-        public void UpdateObjectPosition(ISpatialObject obj)
+        }*/
+        
+        private Node? GetNodeForElement(IQuadtreeElement quadtreeElement)
         {
-            var node = FindNodeForObject(obj);
-            if (node != null)
-            {
-                node.Value.RemoveObject(obj);
-                AddObject(obj);
-            }
+            return GetNodeForElement(_root, quadtreeElement);
+        }
+        
+        private Node? GetNodeForElement(Node currentNode, IQuadtreeElement quadtreeElement)
+        {
+            return currentNode.IsElementInRect(quadtreeElement) ? currentNode : currentNode.FindElementInChildren(currentNode, quadtreeElement);
         }
     }
 }

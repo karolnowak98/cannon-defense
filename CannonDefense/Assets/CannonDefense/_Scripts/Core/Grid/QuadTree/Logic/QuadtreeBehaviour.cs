@@ -2,35 +2,35 @@ using System.Collections.Generic;
 using GlassyCode.CannonDefense.Core.Utility;
 using UnityEngine;
 
-namespace GlassyCode.CannonDefense.Core.Grid.Quadtreev2
+namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
     [RequireComponent(typeof(Collider))]
-    public class QuadtreeMonoBehaviour : GlassyMonoBehaviour, IQuadtreeMono
+    public sealed class QuadtreeBehaviour : GlassyMonoBehaviour, IQuadtree
     {
         [field: SerializeField] public int PreferredNumberOfElementsInNode { get; private set; }
         [field: SerializeField] public int MinNodeSize { get; private set; }
         [field: SerializeField] public int Depth { get; private set; }
         
-        private NodeMono _root;
+        private Node _root;
         
         private void Awake()
         {
             TryGetComponent(out Collider col);
             
-            _root = new NodeMono(col.bounds.GetXZRect(), Depth);
+            _root = new Node(col.bounds.GetXZRect(), Depth);
         }
 
-        public void AddElement(IElement element)
+        public void AddElement(IQuadtreeElement quadtreeElement)
         {
-            _root.AddElement(this, element);
+            _root.AddElement(this, quadtreeElement);
         }
         
-        public void RemoveElement(IElement element)
+        public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
-            _root.RemoveElement(element);
+            _root.RemoveElement(quadtreeElement);
         }
 
-        public void AddElements(IEnumerable<IElement> elements)
+        public void AddElements(IEnumerable<IQuadtreeElement> elements)
         {
             foreach (var element in elements)
             {
@@ -38,7 +38,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.Quadtreev2
             }
         }
         
-        public void RemoveElements(IEnumerable<IElement> elements)
+        public void RemoveElements(IEnumerable<IQuadtreeElement> elements)
         {
             foreach (var element in elements)
             {
@@ -46,20 +46,20 @@ namespace GlassyCode.CannonDefense.Core.Grid.Quadtreev2
             }            
         }
         
-        public void UpdateObjectPosition(IElement element)
+        public void UpdateObjectPosition(IQuadtreeElement quadtreeElement)
         {
-            var node = GetNodeForElement(element);
+            var node = GetNodeForElement(quadtreeElement);
 
             if (node == null)
             {
                 return;
             }
             
-            node.Value.RemoveElement(element);
-            AddElement(element);
+            node.Value.RemoveElement(quadtreeElement);
+            AddElement(quadtreeElement);
         }
 
-        public IEnumerable<IElement> GetElementsInRange(Vector2 searchCenter, int radius)
+        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius)
         {
             var distance = radius * 2;
             var searchRect = new Rect(searchCenter.x - radius, searchCenter.y - radius, distance, distance);
@@ -68,14 +68,14 @@ namespace GlassyCode.CannonDefense.Core.Grid.Quadtreev2
             return elements;
         }
 
-        private NodeMono? GetNodeForElement(IElement element)
+        private Node? GetNodeForElement(IQuadtreeElement quadtreeElement)
         {
-            return GetNodeForElement(_root, element);
+            return GetNodeForElement(_root, quadtreeElement);
         }
         
-        private NodeMono? GetNodeForElement(NodeMono currentNode, IElement element)
+        private Node? GetNodeForElement(Node currentNode, IQuadtreeElement quadtreeElement)
         {
-            return currentNode.IsElementInRect(element) ? currentNode : currentNode.FindElementInChildren(currentNode, element);
+            return currentNode.IsElementInRect(quadtreeElement) ? currentNode : currentNode.FindElementInChildren(currentNode, quadtreeElement);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic;
@@ -14,7 +13,7 @@ using Object = UnityEngine.Object;
 namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
     [RequireComponent(typeof(MeshRenderer))]
-    public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy, ISpatialObject
+    public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy, IQuadtreeElement
     {
         [SerializeField] private EnemyEntity _entity;
 
@@ -43,7 +42,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void OnDestroy()
         {
-            _quadtree.RemoveObject(this);
+            _quadtree.RemoveElement(this);
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
@@ -59,7 +58,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             _meshRenderer.material.color = Colors.GetRandomColor();
             _bounds = _meshRenderer.bounds;
-            _quadtree.AddObject(this);
+            _quadtree.AddElement(this);
         }
 
         private void FixedUpdate()

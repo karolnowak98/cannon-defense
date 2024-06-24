@@ -7,11 +7,11 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
     {
         int PreferredNumberOfElementsInNode { get; }
         int MinNodeSize { get; }
-        void AddElement(IElement element);
-        void RemoveElement(IElement element);
-        void AddElements(IEnumerable<IElement> elements);
-        void RemoveElements(IEnumerable<IElement> elements);
-        void UpdateObjectPosition(IElement element);
-        IEnumerable<IElement> GetElementsInRange(Vector2 searchCenter, int radius);
+        void AddElement(IQuadtreeElement quadtreeElement);
+        void RemoveElement(IQuadtreeElement quadtreeElement);
+        void AddElements(IEnumerable<IQuadtreeElement> elements);
+        void RemoveElements(IEnumerable<IQuadtreeElement> elements);
+        void UpdateObjectPosition(IQuadtreeElement quadtreeElement);
+        HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius);
     }
 }
