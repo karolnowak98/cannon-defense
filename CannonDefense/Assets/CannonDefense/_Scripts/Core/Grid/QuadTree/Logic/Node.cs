@@ -1,119 +1,133 @@
 using System.Collections.Generic;
+using ModestTree;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
     public struct Node
     {
-        public readonly HashSet<ISpatialObject> Objects;
-        public readonly int Depth;
-        public Rect Rect;
-        public Node[] Children;
+        private readonly HashSet<IQuadtreeElement> _elements;
+        private readonly Rect _rect;
+        private readonly int _depth;
+        private Node[] _childrenNodes;
         
-        public bool CanSplit(IQuadtree owner)
-        {
-            return Rect.width >= owner.MinNodeSize * 2 && Rect.height >= owner.MinNodeSize * 2;
-        }
-
+        private bool HasAnyElement => !_elements.IsEmpty();
+        private bool HasAnyChildNode => !_childrenNodes.IsEmpty();
+        public bool IsElementInRect(IQuadtreeElement quadtreeElement) => _rect.Contains(quadtreeElement.Position);
+        private bool HasElement(IQuadtreeElement quadtreeElement) => _elements.Contains(quadtreeElement);
+        private bool IsNodeFull(IQuadtree owner) => _elements.Count + 1 >= owner.PreferredNumberOfElementsInNode;
+        private bool CanSplit(IQuadtree owner) => _rect.width >= owner.MinNodeSize * 2 && _rect.height >= owner.MinNodeSize * 2;
+        private bool Overlaps(Rect rect) => _rect.Overlaps(rect);
+        
         public Node(Rect rect, int depth)
         {
-            Objects = new HashSet<ISpatialObject>();
-            Children = new Node[] {};
-            Rect = rect;
-            Depth = depth;
+            _rect = rect;
+            _depth = depth;
+            _childrenNodes = new Node[]{ };
+            _elements = new HashSet<IQuadtreeElement>();
         }
-
-        public void AddObject(IQuadtree owner, ISpatialObject obj)
+        
+        public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
-            if (Children == null || Children.Length == 0)
+            if (HasElement(quadtreeElement))
             {
-                if (Objects.Count + 1 >= owner.PreferredMaxObjectsPerNode && CanSplit(owner))
-                {
-                    SplitNode(owner);
-                }
-                else
-                {
-                    Objects.Add(obj);
-                }
+                _elements.Remove(quadtreeElement);
             }
-        }
 
-        public void SplitNode(IQuadtree owner)
-        {
-            var halfWidth = Rect.width / 2f;
-            var halfHeight = Rect.height / 2f;
-            var newDepth = Depth + 1;
-
-            Children = new Node[]
+            foreach (var node in _childrenNodes)
             {
-                new(new Rect(Rect.xMin, Rect.yMin, halfWidth, halfHeight), newDepth),
-                new(new Rect(Rect.xMin + halfWidth, Rect.yMin, halfWidth, halfHeight), newDepth),
-                new(new Rect(Rect.xMin, Rect.yMin + halfHeight, halfWidth, halfHeight), newDepth),
-                new(new Rect(Rect.xMin + halfWidth, Rect.yMin + halfHeight, halfWidth, halfHeight), newDepth)
-            };
-
-            foreach (var obj in Objects)
-            {
-                AddObjectToChildren(owner, obj);
-            }
-        }
-
-        public void AddObjectToChildren(IQuadtree owner, ISpatialObject obj)
-        {
-            foreach (var child in Children)
-            {
-                if (child.Overlaps(obj.Rect))
+                if (node.IsElementInRect(quadtreeElement))
                 {
-                    child.AddObject(owner, obj);
+                    node.RemoveElement(quadtreeElement);
                 }
             }
         }
         
-        public void RemoveObject(ISpatialObject obj)
+        public void AddElement(IQuadtree owner, IQuadtreeElement quadtreeElement)
         {
-            if (Objects.Contains(obj))
+            if (HasAnyChildNode)
             {
-                Objects.Remove(obj);
+                return;
             }
-
-            if (Children != null)
-            {
-                foreach (var child in Children)
-                {
-                    if (child.Rect.Contains(obj.Position))
-                    {
-                        child.RemoveObject(obj);
-                    }
-                }
-            }
-        }
-        
-        public bool Overlaps(Rect other)
-        {
-            return other.Overlaps(other);
-        }
-
-        public HashSet<ISpatialObject> FindObjectsInRange(Rect searchRect)
-        {
-            var objects = new HashSet<ISpatialObject>();
             
-            if (Children == null || Children.Length == 0)
+            if (IsNodeFull(owner) && CanSplit(owner))
             {
-                if (Objects == null || Objects.Count == 0) return objects;
+                SplitNode(owner);
+            }
+            else
+            {
+                _elements.Add(quadtreeElement);
+            }
+        }
+        
+        public HashSet<IQuadtreeElement> FindElementsInRect(Rect searchRect)
+        {
+            var elements = new HashSet<IQuadtreeElement>();
+            
+            if (!HasAnyChildNode)
+            {
+                if (!HasAnyElement)
+                {
+                    return elements;
+                }
                 
-                objects.UnionWith(Objects);
-                return objects;
+                elements.UnionWith(elements);
+                return elements;
             }
 
-            foreach (var child in Children)
+            foreach (var child in _childrenNodes)
             {
                 if (child.Overlaps(searchRect))
                 {
-                    return child.FindObjectsInRange(searchRect);
+                    return child.FindElementsInRect(searchRect);
                 }
             }
 
-            return objects;
+            return elements;
+        }
+        
+        public Node FindElementInChildren(Node currentNode, IQuadtreeElement quadtreeElement)
+        {
+            foreach (var child in currentNode._childrenNodes)
+            {
+                if (child.IsElementInRect(quadtreeElement))
+                {
+                    return FindElementInChildren(child, quadtreeElement);
+                }
+            }
+
+            return currentNode;
+        }
+
+        private void SplitNode(IQuadtree owner)
+        {
+            var halfWidth = _rect.width / 2f;
+            var halfHeight = _rect.height / 2f;
+            var newDepth = _depth + 1;
+            
+            _childrenNodes = new Node[]
+            {
+                new(new Rect(_rect.xMin, _rect.yMin, halfWidth, halfHeight), newDepth),
+                new(new Rect(_rect.xMin + halfWidth, _rect.yMin, halfWidth, halfHeight), newDepth),
+                new(new Rect(_rect.xMin, _rect.yMin + halfHeight, halfWidth, halfHeight), newDepth),
+                new(new Rect(_rect.xMin + halfWidth, _rect.yMin + halfHeight, halfWidth, halfHeight), newDepth)
+            };
+
+            foreach (var element in _elements)
+            {
+                AddElementToChildren(owner, element);
+            }
+        }
+        
+        private void AddElementToChildren(IQuadtree owner, IQuadtreeElement quadtreeElement)
+        {
+            foreach (var child in _childrenNodes)
+            {
+                if (child.Overlaps(quadtreeElement.Rect))
+                {
+                    child.AddElement(owner, quadtreeElement);
+                }
+            }
         }
     }
 }

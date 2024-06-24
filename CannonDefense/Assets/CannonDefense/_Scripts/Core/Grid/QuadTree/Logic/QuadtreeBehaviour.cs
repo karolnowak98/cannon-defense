@@ -1,25 +1,23 @@
 using System.Collections.Generic;
-using GlassyCode.CannonDefense.Core.Grid.QuadTree.Data;
+using GlassyCode.CannonDefense.Core.Utility;
 using UnityEngine;
-using Zenject;
 
 namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
-    public sealed class Quadtree : IQuadtree
+    [RequireComponent(typeof(Collider))]
+    public sealed class QuadtreeBehaviour : GlassyMonoBehaviour, IQuadtree
     {
-        public int PreferredNumberOfElementsInNode { get; private set; }
-        public int MinNodeSize { get; private set; }
-
+        [field: SerializeField] public int PreferredNumberOfElementsInNode { get; private set; }
+        [field: SerializeField] public int MinNodeSize { get; private set; }
+        [field: SerializeField] public int Depth { get; private set; }
+        
         private Node _root;
-
-        [Inject]
-        private void Construct(IQuadtreeConfig config, Collider collider)
+        
+        private void Awake()
         {
-            var bounds = collider.bounds;
+            TryGetComponent(out Collider col);
             
-            MinNodeSize = config.MinNodeSize;
-            PreferredNumberOfElementsInNode = config.PreferredMaxObjectsPerNode;
-            _root = new Node(new Rect(bounds.min.x, bounds.min.z, bounds.size.x, bounds.size.z), config.Depth);
+            _root = new Node(col.bounds.GetXZRect(), Depth);
         }
 
         public void AddElement(IQuadtreeElement quadtreeElement)
@@ -60,7 +58,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             node.Value.RemoveElement(quadtreeElement);
             AddElement(quadtreeElement);
         }
-        
+
         public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius)
         {
             var distance = radius * 2;
@@ -69,33 +67,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > distance);
             return elements;
         }
-        
-        /*public NodeOld? FindNodeForObject(ISpatialObject obj)
-        {
-            return FindNodeForObject(_root, obj);
-        }
 
-        private NodeOld? FindNodeForObject(NodeOld currentNode, ISpatialObject obj)
-        {
-            if (currentNode.Rect.Contains(obj.Position))
-            {
-                return currentNode;
-            }
-        
-            if (currentNode.Children != null)
-            {
-                foreach (var child in currentNode.Children)
-                {
-                    if (child.Rect.Contains(obj.Position))
-                    {
-                        return FindNodeForObject(child, obj);
-                    }
-                }
-            }
-        
-            return currentNode; 
-        }*/
-        
         private Node? GetNodeForElement(IQuadtreeElement quadtreeElement)
         {
             return GetNodeForElement(_root, quadtreeElement);

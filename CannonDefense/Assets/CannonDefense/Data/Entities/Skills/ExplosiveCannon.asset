@@ -42,6 +42,6 @@ MonoBehaviour:
   <Damage>k__BackingField: c2010000c2010000c2010000
   <IsAreaScalingByLevel>k__BackingField: 1
   <Area>k__BackingField:
-  - 1000
-  - 1000
-  - 1000
+  - 2000
+  - 2000
+  - 2000
