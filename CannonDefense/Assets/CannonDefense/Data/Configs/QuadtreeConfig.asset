@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Depth>k__BackingField: 5
   <MinNodeSize>k__BackingField: 5
-  <PreferredMaxObjectsPerNode>k__BackingField: 200
+  <PreferredMaxObjectsPerNode>k__BackingField: 25
