@@ -46,7 +46,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }            
         }
         
-        public void UpdateObjectPosition(IQuadtreeElement quadtreeElement)
+        public void UpdateElementNode(IQuadtreeElement quadtreeElement)
         {
             var node = GetNodeForElement(quadtreeElement);
 

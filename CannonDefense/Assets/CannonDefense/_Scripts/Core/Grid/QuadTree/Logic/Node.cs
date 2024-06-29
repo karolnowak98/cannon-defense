@@ -31,6 +31,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         {
             if (HasElement(quadtreeElement))
             {
+                Debug.Log("Usuwam enemy z node'a z recta o pozycji:" + _rect.position);
                 _elements.Remove(quadtreeElement);
             }
 
@@ -49,6 +50,8 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             {
                 return;
             }
+            
+            Debug.Log("Dodaje nowego enemy w pozycji: " + quadtreeElement.Position);
             
             if (IsNodeFull(owner) && CanSplit(owner))
             {
@@ -71,7 +74,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
                     return elements;
                 }
                 
-                elements.UnionWith(elements);
+                elements.UnionWith(_elements);
                 return elements;
             }
 

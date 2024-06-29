@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic;
@@ -42,7 +43,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void OnDestroy()
         {
-            _quadtree.RemoveElement(this);
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
@@ -52,18 +52,21 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             TryGetComponent(out _rb);
             TryGetComponent(out _meshRenderer);
+            
+            _bounds = _meshRenderer.bounds;
         }
 
-        private void Start()
+        private void OnDisable()
         {
-            _meshRenderer.material.color = Colors.GetRandomColor();
-            _bounds = _meshRenderer.bounds;
-            _quadtree.AddElement(this);
+            _quadtree.RemoveElement(this);
         }
 
         private void FixedUpdate()
         {
-            _quadtree.UpdateObjectPosition(this);
+            if (IsActive)
+            {
+                _quadtree.UpdateElementNode(this);
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -83,6 +86,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _currentHealth = _entity.MaxHealth;
             _currentMoveSpeed = _entity.MoveSpeed;
             _rb.velocity = Vector3.back * _currentMoveSpeed;
+            _meshRenderer.material.color = Colors.GetRandomColor();
+            _quadtree.AddElement(this);
             Enable();
         }
 

@@ -68,7 +68,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void SpawnEnemy()
         {
-            var enemy = _enemyPools[_config.GetRandomEnemyName()].Pool.Get();
+             _enemyPools[_config.GetRandomEnemyName()].Pool.Get();
         }
     }
 }

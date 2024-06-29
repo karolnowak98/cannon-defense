@@ -48,16 +48,16 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }            
         }
         
-        public void UpdateObjectPosition(IQuadtreeElement quadtreeElement)
+        public void UpdateElementNode(IQuadtreeElement quadtreeElement)
         {
-            var node = GetNodeForElement(quadtreeElement);
-
-            if (node == null)
+            var currentNode = GetNodeForElement(quadtreeElement);
+            
+            if (currentNode == null || currentNode.Value.IsElementInRect(quadtreeElement))
             {
                 return;
             }
             
-            node.Value.RemoveElement(quadtreeElement);
+            currentNode.Value.RemoveElement(quadtreeElement);
             AddElement(quadtreeElement);
         }
         
@@ -69,32 +69,6 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > distance);
             return elements;
         }
-        
-        /*public NodeOld? FindNodeForObject(ISpatialObject obj)
-        {
-            return FindNodeForObject(_root, obj);
-        }
-
-        private NodeOld? FindNodeForObject(NodeOld currentNode, ISpatialObject obj)
-        {
-            if (currentNode.Rect.Contains(obj.Position))
-            {
-                return currentNode;
-            }
-        
-            if (currentNode.Children != null)
-            {
-                foreach (var child in currentNode.Children)
-                {
-                    if (child.Rect.Contains(obj.Position))
-                    {
-                        return FindNodeForObject(child, obj);
-                    }
-                }
-            }
-        
-            return currentNode; 
-        }*/
         
         private Node? GetNodeForElement(IQuadtreeElement quadtreeElement)
         {

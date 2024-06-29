@@ -23,10 +23,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         protected override Enemy CreateElement()
         {
             var enemy = _factory.Create(_enemy);
-            enemy.Pool = Pool;
             enemy.SetPosition(_spawningArea.GetRandomPointInCollider());
             enemy.SetParent(Parent);
-            enemy.Reset();
+            enemy.Pool = Pool;
             return enemy;
         }
 
