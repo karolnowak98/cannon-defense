@@ -59,12 +59,13 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             AddElement(quadtreeElement);
         }
 
-        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius)
+        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, float radius)
         {
+            var elements = new HashSet<IQuadtreeElement>();
             var distance = radius * 2;
             var searchRect = new Rect(searchCenter.x - radius, searchCenter.y - radius, distance, distance);
-            var elements = _root.FindElementsInRect(searchRect);
-            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > distance);
+            _root.FindElementsInRect(searchRect, elements);
+            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > (radius * radius));
             return elements;
         }
 

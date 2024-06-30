@@ -11,7 +11,6 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         private HashSet<IQuadtreeElement> _elements;
         private Node[] _childrenNodes;
         
-        private bool HasAnyElement => !_elements.IsEmpty();
         private bool HasAnyChildNode => !_childrenNodes.IsEmpty();
         public bool IsElementInRect(IQuadtreeElement quadtreeElement) => _rect.Contains(quadtreeElement.Position);
         private bool IsNodeFull(IQuadtree owner) => _elements.Count + 1 >= owner.PreferredNumberOfElementsInNode;
@@ -25,7 +24,6 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             _childrenNodes = new Node[]{ };
         }
         
-        //Usuwa element 
         public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
             var removed = _elements?.Remove(quadtreeElement);
@@ -52,10 +50,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }
             else
             {
-                if (_elements == null)
-                {
-                    _elements = new HashSet<IQuadtreeElement>();
-                }
+                _elements ??= new HashSet<IQuadtreeElement>();
 
                 if (IsNodeFull(owner) && CanSplit(owner))
                 {
@@ -68,30 +63,27 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }
         }
         
-        public HashSet<IQuadtreeElement> FindElementsInRect(Rect searchRect)
+        public void FindElementsInRect(Rect searchRect, HashSet<IQuadtreeElement> foundElements)
         {
-            var elements = new HashSet<IQuadtreeElement>();
-            
-            if (!HasAnyChildNode)
+            if (HasAnyChildNode)
             {
-                if (_elements == null || !HasAnyElement)
+                foreach (var child in _childrenNodes)
                 {
-                    return elements;
-                }
-                
-                elements.UnionWith(_elements);
-                return elements;
-            }
-
-            foreach (var child in _childrenNodes)
-            {
-                if (child.Overlaps(searchRect))
-                {
-                    elements.UnionWith(child.FindElementsInRect(searchRect));
+                    if (child.Overlaps(searchRect))
+                    {
+                        child.FindElementsInRect(searchRect, foundElements);
+                    }
                 }
             }
+            else
+            {
+                if (_elements == null)
+                {
+                    return;
+                }
 
-            return elements;
+                foundElements.UnionWith(_elements);
+            }
         }
         
         public Node FindElementInChildren(Node currentNode, IQuadtreeElement quadtreeElement)

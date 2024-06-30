@@ -12,6 +12,6 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         void AddElements(IEnumerable<IQuadtreeElement> elements);
         void RemoveElements(IEnumerable<IQuadtreeElement> elements);
         void UpdateElementNode(IQuadtreeElement quadtreeElement);
-        HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius);
+        HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, float radius);
     }
 }

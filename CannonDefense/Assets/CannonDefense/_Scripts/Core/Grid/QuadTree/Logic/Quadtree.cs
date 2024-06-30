@@ -61,21 +61,22 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             AddElement(quadtreeElement);
         }
         
-        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius)
+        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, float radius)
         {
+            var foundElements = new HashSet<IQuadtreeElement>();
             var distance = radius * 2;
             var searchRect = new Rect(searchCenter.x - radius, searchCenter.y - radius, distance, distance);
-            var elements = _root.FindElementsInRect(searchRect);
-            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > (radius * radius));
-            return elements;
+            _root.FindElementsInRect(searchRect, foundElements);
+            foundElements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > (radius * radius));
+            return foundElements;
         }
         
-        private Node? GetNodeForElement(IQuadtreeElement quadtreeElement)
+        private Node GetNodeForElement(IQuadtreeElement quadtreeElement)
         {
             return GetNodeForElement(_root, quadtreeElement);
         }
         
-        private Node? GetNodeForElement(Node currentNode, IQuadtreeElement quadtreeElement)
+        private Node GetNodeForElement(Node currentNode, IQuadtreeElement quadtreeElement)
         {
             return currentNode.IsElementInRect(quadtreeElement) ? currentNode : currentNode.FindElementInChildren(currentNode, quadtreeElement);
         }

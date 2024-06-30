@@ -98,7 +98,6 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             
             if (_currentHealth <= 0)
             {
-                Debug.Log("Enemy died.");
                 _signalBus.TryFire(new EnemyDiedSignal { Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
                 if (IsActive)
                 {

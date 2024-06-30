@@ -38,11 +38,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private void TakeDamageIfInRange(SkillProjectileBoomedSignal signal)
         {
             var location = new Vector2(signal.ExplosionCenter.x, signal.ExplosionCenter.z);
-            var objects = _quadtree.GetElementsInRange(location, (int) signal.Radius);
+            var elements = _quadtree.GetElementsInRange(location, signal.Radius);
 
-            Debug.Log($"Explosion at {location} with radius {signal.Radius} found {objects.Count()} objects.");
-            
-            foreach (var enemy in objects.Cast<IEnemy>())
+            foreach (var enemy in elements.Cast<IEnemy>())
             {
                 enemy.TakeDamage(signal.Damage);
             }
