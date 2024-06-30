@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic;
 using GlassyCode.CannonDefense.Core.Time;
@@ -13,7 +14,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
     public sealed class EnemiesManager : IEnemiesManager, ITickable, IDisposable
     {
+        private readonly HashSet<IEnemy> _enemies = new();
         private SignalBus _signalBus;
+        
         public IQuadtree Quadtree { get; private set; }
         public IEnemySpawner Spawner { get; private set; } 
         
@@ -23,8 +26,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _signalBus = signalBus;
             Quadtree = quadtree;
             Spawner = new EnemySpawner(timeController, config, factory, spawningArea);
-
-            Spawner.OnRemovedEnemies += () => Quadtree.Reset();
+            Spawner.OnSpawnedEnemy += AddEnemy;
+            Spawner.OnRemovedEnemies += RemoveEnemies;
             _signalBus.Subscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.Subscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.Subscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
@@ -35,6 +38,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         public void Dispose()
         {
+            Spawner.OnSpawnedEnemy -= AddEnemy;
+            Spawner.OnRemovedEnemies -= RemoveEnemies;
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
             _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
@@ -46,42 +51,38 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             Spawner.Tick();
         }
         
+        private void AddEnemy(IEnemy enemy)
+        {
+            _enemies.Add(enemy);
+        }
+
+        private void RemoveEnemies()
+        {
+            _enemies.Clear();
+            Quadtree.Reset();
+        }
+        
         private void OnEnemyCrossedFinishLine(EnemyCrossedFinishLine signal)
         {
-            var elements = Quadtree.GetAllElements();
-
-            foreach (var element in elements)
+            foreach (var enemy in _enemies)
             {
-                if (element is IEnemy enemy)
-                {
-                    enemy.UpdateStatsByEffects(EnemyEffectTrigger.CrossedFinishLine, signal.Effects);
-                }
+                enemy.UpdateStatsByEffects(EnemyEffectTrigger.CrossedFinishLine, signal.Effects);
             }
         }
 
         private void OnEnemyWounded(EnemyWoundedSignal signal) 
         {
-            var elements = Quadtree.GetAllElements();
-
-            foreach (var element in elements)
+            foreach (var enemy in _enemies)
             {
-                if (element is IEnemy enemy)
-                {
-                    enemy.UpdateStatsByEffects(EnemyEffectTrigger.Wounded, signal.Effects);
-                }
+                enemy.UpdateStatsByEffects(EnemyEffectTrigger.Wounded, signal.Effects);
             }
         }
 
         private void OnEnemyDied(EnemyDiedSignal signal)
         {
-            var elements = Quadtree.GetAllElements();
-
-            foreach (var element in elements)
+            foreach (var enemy in _enemies)
             {
-                if (element is IEnemy enemy)
-                {
-                    enemy.UpdateStatsByEffects(EnemyEffectTrigger.Died, signal.Effects);
-                }
+                enemy.UpdateStatsByEffects(EnemyEffectTrigger.Died, signal.Effects);
             }
         }
         

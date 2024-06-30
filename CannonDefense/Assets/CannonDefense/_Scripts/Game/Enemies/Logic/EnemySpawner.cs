@@ -55,6 +55,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
                 pool.Clear();
                 pool.SetPoolParent(_spawningEnemyParent);
             }
+            
+            OnRemovedEnemies?.Invoke();
         }
         
         private void InitPools(IEnemiesConfig config, Enemy.Factory factory, BoxCollider spawningArea, Transform spawningEnemyParent)

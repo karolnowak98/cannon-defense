@@ -129,10 +129,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
                 }
             }
 
-            if (IsActive)
-            {
-                _rb.velocity = Vector3.back * _currentMoveSpeed;
-            }
+            _rb.velocity = Vector3.back * _currentMoveSpeed;
         }
         
         private bool HasLessHealthThanPercent(float percentage) => _currentHealth < _entity.MaxHealth * percentage;
