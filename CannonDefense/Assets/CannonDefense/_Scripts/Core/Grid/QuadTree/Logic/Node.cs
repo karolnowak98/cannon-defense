@@ -25,9 +25,15 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             _childrenNodes = new Node[]{ };
         }
         
+        //Usuwa element 
         public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
-            _elements?.Remove(quadtreeElement);
+            var removed = _elements?.Remove(quadtreeElement);
+
+            if (removed is true)
+            {
+                return;
+            }
 
             foreach (var node in _childrenNodes)
             {
