@@ -55,7 +55,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
                 return;
             }
             
-            node.Value.RemoveElement(quadtreeElement);
+            node.RemoveElement(quadtreeElement);
             AddElement(quadtreeElement);
         }
 

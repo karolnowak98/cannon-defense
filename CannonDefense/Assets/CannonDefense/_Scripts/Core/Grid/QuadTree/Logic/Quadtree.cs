@@ -52,12 +52,12 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         {
             var currentNode = GetNodeForElement(quadtreeElement);
             
-            if (currentNode == null || currentNode.Value.IsElementInRect(quadtreeElement))
+            if (currentNode == null || currentNode.IsElementInRect(quadtreeElement))
             {
                 return;
             }
-            
-            currentNode.Value.RemoveElement(quadtreeElement);
+
+            currentNode.RemoveElement(quadtreeElement);
             AddElement(quadtreeElement);
         }
         
@@ -66,7 +66,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             var distance = radius * 2;
             var searchRect = new Rect(searchCenter.x - radius, searchCenter.y - radius, distance, distance);
             var elements = _root.FindElementsInRect(searchRect);
-            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > distance);
+            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > (radius * radius));
             return elements;
         }
         
