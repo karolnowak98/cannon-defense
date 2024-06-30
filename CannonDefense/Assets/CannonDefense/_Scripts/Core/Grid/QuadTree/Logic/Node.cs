@@ -99,6 +99,26 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             return currentNode;
         }
 
+        public void GetAllElements(HashSet<IQuadtreeElement> elements)
+        {
+            if (HasAnyChildNode)
+            {
+                foreach (var child in _childrenNodes)
+                {
+                    child.GetAllElements(elements);
+                }
+            }
+            else
+            {
+                if (_elements == null)
+                {
+                    return;
+                }
+                
+                elements.UnionWith(_elements);
+            }
+        }
+
         private void SplitNode(IQuadtree owner)
         {
             var halfWidth = _rect.width / 2f;

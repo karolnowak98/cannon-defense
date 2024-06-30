@@ -47,6 +47,7 @@ namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
         public void RestartBattle()
         {
             _enemiesManager.Spawner.RemoveEnemies();
+            _enemiesManager.Quadtree.Reset();
             _playerManager.Reset();
             StartBattle();
         }

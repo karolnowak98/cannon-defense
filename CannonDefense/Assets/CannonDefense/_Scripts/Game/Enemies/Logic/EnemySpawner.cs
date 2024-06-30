@@ -16,6 +16,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private readonly ITimer _timer;
         private Transform _spawningEnemyParent;
 
+        public event Action<IEnemy> OnSpawnedEnemy;
+        public event Action OnRemovedEnemies;
+
         public EnemySpawner(ITimeController timeController, IEnemiesConfig config, Enemy.Factory factory, BoxCollider spawningArea)
         {
             _config = config;
@@ -68,7 +71,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void SpawnEnemy()
         {
-             _enemyPools[_config.GetRandomEnemyName()].Pool.Get();
+             var enemy = _enemyPools[_config.GetRandomEnemyName()].Pool.Get();
+             OnSpawnedEnemy?.Invoke(enemy);
         }
     }
 }
