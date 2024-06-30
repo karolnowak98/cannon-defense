@@ -14,7 +14,6 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         private bool HasAnyElement => !_elements.IsEmpty();
         private bool HasAnyChildNode => !_childrenNodes.IsEmpty();
         public bool IsElementInRect(IQuadtreeElement quadtreeElement) => _rect.Contains(quadtreeElement.Position);
-        private bool HasElement(IQuadtreeElement quadtreeElement) => _elements.Contains(quadtreeElement);
         private bool IsNodeFull(IQuadtree owner) => _elements.Count + 1 >= owner.PreferredNumberOfElementsInNode;
         private bool CanSplit(IQuadtree owner) => _rect.width >= owner.MinNodeSize * 2 && _rect.height >= owner.MinNodeSize * 2;
         private bool Overlaps(Rect rect) => _rect.Overlaps(rect);
@@ -28,10 +27,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         
         public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
-            if (_elements != null && HasElement(quadtreeElement))
-            {
-                _elements.Remove(quadtreeElement);
-            }
+            _elements?.Remove(quadtreeElement);
 
             foreach (var node in _childrenNodes)
             {
