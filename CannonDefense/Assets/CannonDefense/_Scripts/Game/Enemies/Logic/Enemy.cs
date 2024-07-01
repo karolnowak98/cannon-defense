@@ -61,7 +61,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             if (!other.CompareTag("Finish")) return;
             
-            _signalBus.TryFire(new EnemyCrossedFinishLine { Effects = _entity.Effects, Damage = _entity.Damage });
+            _signalBus.Fire(new EnemyCrossedFinishLineSignal{Effects = _entity.Effects, Damage = _entity.Damage});
             
             if (IsActive)
             {
@@ -82,11 +82,11 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         public void TakeDamage(int damage)
         {
             _currentHealth -= damage;
-            _signalBus.TryFire(new EnemyWoundedSignal { Effects = _entity.Effects});
+            _signalBus.Fire(new EnemyWoundedSignal{Effects = _entity.Effects});
             
             if (_currentHealth <= 0)
             {
-                _signalBus.TryFire(new EnemyDiedSignal { Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
+                _signalBus.Fire(new EnemyDiedSignal{Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
                 if (IsActive)
                 {
                     Pool.Release(this);

@@ -25,12 +25,13 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             _signalBus = signalBus;
             Quadtree = quadtree;
-            Spawner = new EnemySpawner(timeController, config, factory, spawningArea);
-            Spawner.OnSpawnedEnemy += AddEnemy;
+            Spawner = new EnemySpawner(signalBus, timeController, config, factory, spawningArea);
+            
             Spawner.OnRemovedEnemies += RemoveEnemies;
+            _signalBus.Subscribe<EnemySpawnedSignal>(AddEnemy);
             _signalBus.Subscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.Subscribe<EnemyWoundedSignal>(OnEnemyWounded);
-            _signalBus.Subscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
+            _signalBus.Subscribe<EnemyCrossedFinishLineSignal>(OnEnemyCrossedFinishLine);
             _signalBus.Subscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
             
             Quadtree.Reset();
@@ -38,11 +39,11 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         public void Dispose()
         {
-            Spawner.OnSpawnedEnemy -= AddEnemy;
             Spawner.OnRemovedEnemies -= RemoveEnemies;
+            _signalBus.TryUnsubscribe<EnemySpawnedSignal>(AddEnemy);
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
             _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
-            _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
+            _signalBus.TryUnsubscribe<EnemyCrossedFinishLineSignal>(OnEnemyCrossedFinishLine);
             _signalBus.TryUnsubscribe<SkillProjectileBoomedSignal>(TakeDamageIfInRange);
         }
         
@@ -51,9 +52,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             Spawner.Tick();
         }
         
-        private void AddEnemy(IEnemy enemy)
+        private void AddEnemy(EnemySpawnedSignal signal)
         {
-            _enemies.Add(enemy);
+            _enemies.Add(signal.Enemy);
         }
 
         private void RemoveEnemies()
@@ -62,7 +63,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             Quadtree.Reset();
         }
         
-        private void OnEnemyCrossedFinishLine(EnemyCrossedFinishLine signal)
+        private void OnEnemyCrossedFinishLine(EnemyCrossedFinishLineSignal signal)
         {
             foreach (var enemy in _enemies)
             {

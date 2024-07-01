@@ -16,7 +16,7 @@ MonoBehaviour:
   <Type>k__BackingField: 2
   <MoveSpeed>k__BackingField: 10
   <MaxHealth>k__BackingField: 50
-  <Damage>k__BackingField: 0
+  <Damage>k__BackingField: 50
   <Score>k__BackingField: 15
   <Experience>k__BackingField: 25
   <Effects>k__BackingField: []
