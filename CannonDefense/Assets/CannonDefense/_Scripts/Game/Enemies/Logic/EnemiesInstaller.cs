@@ -26,7 +26,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 
         private void DeclareSignals()
         {
-            Container.DeclareSignal<EnemyCrossedFinishLine>();
+            Container.DeclareSignal<EnemyCrossedFinishLineSignal>();
+            Container.DeclareSignal<EnemySpawnedSignal>();
             Container.DeclareSignal<EnemyDiedSignal>();
             Container.DeclareSignal<EnemyWoundedSignal>();
         }

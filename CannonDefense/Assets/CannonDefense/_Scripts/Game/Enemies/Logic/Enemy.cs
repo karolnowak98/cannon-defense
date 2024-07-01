@@ -34,43 +34,34 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             _signalBus = signalBus;
             _quadtree = quadtree;
-            
-            _signalBus.Subscribe<EnemyDiedSignal>(OnEnemyDied);
-            _signalBus.Subscribe<EnemyWoundedSignal>(OnEnemyWounded);
-            _signalBus.Subscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
-        }
-        
-        private void OnDestroy()
-        {
-            _quadtree.RemoveElement(this);
-            _signalBus.TryUnsubscribe<EnemyDiedSignal>(OnEnemyDied);
-            _signalBus.TryUnsubscribe<EnemyWoundedSignal>(OnEnemyWounded);
-            _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(OnEnemyCrossedFinishLine);
         }
         
         private void Awake()
         {
             TryGetComponent(out _rb);
             TryGetComponent(out _meshRenderer);
+            
+            _bounds = _meshRenderer.bounds;
         }
 
-        private void Start()
+        private void OnDisable()
         {
-            _meshRenderer.material.color = Colors.GetRandomColor();
-            _bounds = _meshRenderer.bounds;
-            _quadtree.AddElement(this);
+            _quadtree.RemoveElement(this);
         }
 
         private void FixedUpdate()
         {
-            _quadtree.UpdateObjectPosition(this);
+            if (IsActive)
+            {
+                _quadtree.UpdateElementNode(this);
+            }
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Finish")) return;
             
-            _signalBus.TryFire(new EnemyCrossedFinishLine { Effects = _entity.Effects, Damage = _entity.Damage });
+            _signalBus.Fire(new EnemyCrossedFinishLineSignal{Effects = _entity.Effects, Damage = _entity.Damage});
             
             if (IsActive)
             {
@@ -83,18 +74,19 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             _currentHealth = _entity.MaxHealth;
             _currentMoveSpeed = _entity.MoveSpeed;
             _rb.velocity = Vector3.back * _currentMoveSpeed;
+            _meshRenderer.material.color = Colors.GetRandomColor();
+            _quadtree.AddElement(this);
             Enable();
         }
 
         public void TakeDamage(int damage)
         {
             _currentHealth -= damage;
-            _signalBus.TryFire(new EnemyWoundedSignal { Effects = _entity.Effects});
+            _signalBus.Fire(new EnemyWoundedSignal{Effects = _entity.Effects});
             
             if (_currentHealth <= 0)
             {
-                Debug.Log("Enemy died.");
-                _signalBus.TryFire(new EnemyDiedSignal { Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
+                _signalBus.Fire(new EnemyDiedSignal{Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
                 if (IsActive)
                 {
                     Pool.Release(this);
@@ -102,7 +94,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             }
         }
         
-        private void UpdateStatsByEffects(EnemyEffectTrigger trigger, IEnumerable<EnemyEffectEntity> effects)
+        public void UpdateStatsByEffects(EnemyEffectTrigger trigger, IEnumerable<EnemyEffectEntity> effects)
         {
             foreach (var effect in effects)
             {
@@ -136,14 +128,11 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
                         break;
                 }
             }
-            
+
             _rb.velocity = Vector3.back * _currentMoveSpeed;
         }
         
         private bool HasLessHealthThanPercent(float percentage) => _currentHealth < _entity.MaxHealth * percentage;
-        private void OnEnemyDied(EnemyDiedSignal signal) => UpdateStatsByEffects(EnemyEffectTrigger.Died, signal.Effects);
-        private void OnEnemyWounded(EnemyWoundedSignal signal) => UpdateStatsByEffects(EnemyEffectTrigger.Wounded, signal.Effects);
-        private void OnEnemyCrossedFinishLine(EnemyCrossedFinishLine signal) => UpdateStatsByEffects(EnemyEffectTrigger.CrossedFinishLine, signal.Effects);
         
         public sealed class Factory : PlaceholderFactory<Object, Enemy>{ }
     }

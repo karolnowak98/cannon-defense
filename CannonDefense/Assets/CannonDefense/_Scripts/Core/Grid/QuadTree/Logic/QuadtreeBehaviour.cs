@@ -46,7 +46,7 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }            
         }
         
-        public void UpdateObjectPosition(IQuadtreeElement quadtreeElement)
+        public void UpdateElementNode(IQuadtreeElement quadtreeElement)
         {
             var node = GetNodeForElement(quadtreeElement);
 
@@ -55,25 +55,38 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
                 return;
             }
             
-            node.Value.RemoveElement(quadtreeElement);
+            node.RemoveElement(quadtreeElement);
             AddElement(quadtreeElement);
         }
 
-        public HashSet<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, int radius)
+        public IEnumerable<IQuadtreeElement> GetElementsInRange(Vector2 searchCenter, float radius)
         {
+            var elements = new HashSet<IQuadtreeElement>();
             var distance = radius * 2;
             var searchRect = new Rect(searchCenter.x - radius, searchCenter.y - radius, distance, distance);
-            var elements = _root.FindElementsInRect(searchRect);
-            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > distance);
+            _root.FindElementsInRect(searchRect, elements);
+            elements.RemoveWhere(el => (searchCenter - el.Position).sqrMagnitude > radius * radius);
             return elements;
         }
 
-        private Node? GetNodeForElement(IQuadtreeElement quadtreeElement)
+        public HashSet<IQuadtreeElement> GetAllElements()
+        {
+            var elements = new HashSet<IQuadtreeElement>();
+            _root.GetAllElements(elements);
+            return elements;
+        }
+
+        public void Reset()
+        {
+            
+        }
+
+        private Node GetNodeForElement(IQuadtreeElement quadtreeElement)
         {
             return GetNodeForElement(_root, quadtreeElement);
         }
         
-        private Node? GetNodeForElement(Node currentNode, IQuadtreeElement quadtreeElement)
+        private Node GetNodeForElement(Node currentNode, IQuadtreeElement quadtreeElement)
         {
             return currentNode.IsElementInRect(quadtreeElement) ? currentNode : currentNode.FindElementInChildren(currentNode, quadtreeElement);
         }

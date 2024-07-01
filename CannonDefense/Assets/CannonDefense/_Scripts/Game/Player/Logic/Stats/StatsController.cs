@@ -28,9 +28,9 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Stats
             _signalBus.TryFire(new PlayerStatsResetSignal { Stats = _currentStats });
         }
 
-        public void EnemyAttackedHandler(EnemyCrossedFinishLine enemyCrossedFinishLine)
+        public void EnemyAttackedHandler(EnemyCrossedFinishLineSignal enemyCrossedFinishLineSignal)
         {
-            _currentStats.DecreaseHealth(enemyCrossedFinishLine.Damage);
+            _currentStats.DecreaseHealth(enemyCrossedFinishLineSignal.Damage);
             
             if (_currentStats.IsDied)
             {

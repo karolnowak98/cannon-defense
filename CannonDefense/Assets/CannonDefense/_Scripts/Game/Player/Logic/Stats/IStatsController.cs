@@ -6,7 +6,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic.Stats
     {
         int CurrentDamage { get; }
         void Reset();
-        void EnemyAttackedHandler(EnemyCrossedFinishLine enemyCrossedFinishLine);
+        void EnemyAttackedHandler(EnemyCrossedFinishLineSignal enemyCrossedFinishLineSignal);
         void EnemyKilledHandler(EnemyDiedSignal enemyDiedSignal);
     }
 }

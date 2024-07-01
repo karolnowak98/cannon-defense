@@ -4,17 +4,15 @@ using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
 {
-    public struct Node
+    public class Node
     {
-        private readonly HashSet<IQuadtreeElement> _elements;
         private readonly Rect _rect;
         private readonly int _depth;
+        private HashSet<IQuadtreeElement> _elements;
         private Node[] _childrenNodes;
         
-        private bool HasAnyElement => !_elements.IsEmpty();
         private bool HasAnyChildNode => !_childrenNodes.IsEmpty();
         public bool IsElementInRect(IQuadtreeElement quadtreeElement) => _rect.Contains(quadtreeElement.Position);
-        private bool HasElement(IQuadtreeElement quadtreeElement) => _elements.Contains(quadtreeElement);
         private bool IsNodeFull(IQuadtree owner) => _elements.Count + 1 >= owner.PreferredNumberOfElementsInNode;
         private bool CanSplit(IQuadtree owner) => _rect.width >= owner.MinNodeSize * 2 && _rect.height >= owner.MinNodeSize * 2;
         private bool Overlaps(Rect rect) => _rect.Overlaps(rect);
@@ -24,14 +22,15 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             _rect = rect;
             _depth = depth;
             _childrenNodes = new Node[]{ };
-            _elements = new HashSet<IQuadtreeElement>();
         }
         
         public void RemoveElement(IQuadtreeElement quadtreeElement)
         {
-            if (HasElement(quadtreeElement))
+            var removed = _elements?.Remove(quadtreeElement);
+
+            if (removed is true)
             {
-                _elements.Remove(quadtreeElement);
+                return;
             }
 
             foreach (var node in _childrenNodes)
@@ -47,43 +46,44 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
         {
             if (HasAnyChildNode)
             {
-                return;
-            }
-            
-            if (IsNodeFull(owner) && CanSplit(owner))
-            {
-                SplitNode(owner);
+                AddElementToChildren(owner, quadtreeElement);
             }
             else
             {
-                _elements.Add(quadtreeElement);
+                _elements ??= new HashSet<IQuadtreeElement>();
+
+                if (IsNodeFull(owner) && CanSplit(owner))
+                {
+                    SplitNode(owner);
+                } 
+                else
+                {
+                    _elements.Add(quadtreeElement);
+                }
             }
         }
         
-        public HashSet<IQuadtreeElement> FindElementsInRect(Rect searchRect)
+        public void FindElementsInRect(Rect searchRect, HashSet<IQuadtreeElement> foundElements)
         {
-            var elements = new HashSet<IQuadtreeElement>();
-            
-            if (!HasAnyChildNode)
+            if (HasAnyChildNode)
             {
-                if (!HasAnyElement)
+                foreach (var child in _childrenNodes)
                 {
-                    return elements;
-                }
-                
-                elements.UnionWith(elements);
-                return elements;
-            }
-
-            foreach (var child in _childrenNodes)
-            {
-                if (child.Overlaps(searchRect))
-                {
-                    return child.FindElementsInRect(searchRect);
+                    if (child.Overlaps(searchRect))
+                    {
+                        child.FindElementsInRect(searchRect, foundElements);
+                    }
                 }
             }
+            else
+            {
+                if (_elements == null)
+                {
+                    return;
+                }
 
-            return elements;
+                foundElements.UnionWith(_elements);
+            }
         }
         
         public Node FindElementInChildren(Node currentNode, IQuadtreeElement quadtreeElement)
@@ -97,6 +97,26 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             }
 
             return currentNode;
+        }
+
+        public void GetAllElements(HashSet<IQuadtreeElement> elements)
+        {
+            if (HasAnyChildNode)
+            {
+                foreach (var child in _childrenNodes)
+                {
+                    child.GetAllElements(elements);
+                }
+            }
+            else
+            {
+                if (_elements == null)
+                {
+                    return;
+                }
+                
+                elements.UnionWith(_elements);
+            }
         }
 
         private void SplitNode(IQuadtree owner)
@@ -117,6 +137,8 @@ namespace GlassyCode.CannonDefense.Core.Grid.QuadTree.Logic
             {
                 AddElementToChildren(owner, element);
             }
+
+            _elements = null;
         }
         
         private void AddElementToChildren(IQuadtree owner, IQuadtreeElement quadtreeElement)

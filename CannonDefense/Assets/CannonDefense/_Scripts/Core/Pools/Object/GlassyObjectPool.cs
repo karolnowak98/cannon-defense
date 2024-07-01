@@ -32,7 +32,6 @@ namespace GlassyCode.CannonDefense.Core.Pools.Object
         {
             var element = UnityEngine.Object.Instantiate(Prefab);
             element.Pool = Pool;
-            element.Reset();
             return element;
         }
 

@@ -33,7 +33,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
             Shooting = new ShootingController(inputManager, config.Shooting, cannonBallFactory, cannonBallSpawnPoint);
             Skills = new SkillsController(signalBus, config.OffensiveSkills, skillProjectile, cannonBallSpawnPoint);
             
-            _signalBus.Subscribe<EnemyCrossedFinishLine>(Stats.EnemyAttackedHandler);
+            _signalBus.Subscribe<EnemyCrossedFinishLineSignal>(Stats.EnemyAttackedHandler);
             _signalBus.Subscribe<EnemyDiedSignal>(Stats.EnemyKilledHandler);
         }
         
@@ -43,7 +43,7 @@ namespace GlassyCode.CannonDefense.Game.Player.Logic
             Skills.Dispose();
             Shooting.Dispose();
             
-            _signalBus.TryUnsubscribe<EnemyCrossedFinishLine>(Stats.EnemyAttackedHandler);
+            _signalBus.TryUnsubscribe<EnemyCrossedFinishLineSignal>(Stats.EnemyAttackedHandler);
             _signalBus.TryUnsubscribe<EnemyDiedSignal>(Stats.EnemyKilledHandler);
         }
 
