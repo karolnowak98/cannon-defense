@@ -5,7 +5,7 @@ Simple tower defense with levelup and skills logic. The game idea is to survive 
 The game code is created based on:
 - UnityEngine.Pool library for object pooling for enemies and cannonballs
 - Zenject for factories, signals (global events) and dependency injection
-- Quadtree structure for detecting collisions
+- Quadtree structure for detecting collisions, storing enemies in nodes
 
 
 
