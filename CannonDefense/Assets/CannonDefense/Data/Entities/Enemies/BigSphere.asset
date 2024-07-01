@@ -16,8 +16,7 @@ MonoBehaviour:
   <Type>k__BackingField: 2
   <MoveSpeed>k__BackingField: 10
   <MaxHealth>k__BackingField: 50
-  <Damage>k__BackingField: 5
+  <Damage>k__BackingField: 50
   <Score>k__BackingField: 15
   <Experience>k__BackingField: 25
-  <Effects>k__BackingField:
-  - {fileID: 11400000, guid: 99560424a035b784889a0fa3978b19b2, type: 2}
+  <Effects>k__BackingField: []

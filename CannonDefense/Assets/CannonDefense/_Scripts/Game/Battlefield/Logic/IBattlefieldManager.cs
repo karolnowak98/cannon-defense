@@ -1,5 +1,3 @@
-using System;
-
 namespace GlassyCode.CannonDefense.Game.Battlefield.Logic
 {
     public interface IBattlefieldManager
