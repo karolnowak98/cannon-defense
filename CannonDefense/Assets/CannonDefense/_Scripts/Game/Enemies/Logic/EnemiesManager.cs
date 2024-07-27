@@ -7,6 +7,8 @@ using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
 using GlassyCode.CannonDefense.Game.Player.Logic.Skills.Signals;
+using Unity.Collections;
+using Unity.Jobs;
 using UnityEngine;
 using Zenject;
 
@@ -65,10 +67,26 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         private void OnEnemyCrossedFinishLine(EnemyCrossedFinishLineSignal signal)
         {
+            var enemiesDataArray = new NativeArray<Enemy.Data>(_enemies.Count, Allocator.TempJob);
+
+            var i = 0;
+            
             foreach (var enemy in _enemies)
             {
-                enemy.UpdateStatsByEffects(EnemyEffectTrigger.CrossedFinishLine, signal.Effects);
+                enemiesDataArray[i] = new Enemy.Data(enemy);
+                i++;
             }
+            
+            var updateEnemyStatsJob = new UpdateEnemyStatsJob
+            {
+                EnemiesData = enemiesDataArray, 
+                Trigger = EnemyEffectTrigger.CrossedFinishLine,
+                Effects = signal.Effects
+            };
+            
+            var jobHandle = updateEnemyStatsJob.Schedule(_enemies.Count, 1);
+            jobHandle.Complete();
+            enemiesDataArray.Dispose();
         }
 
         private void OnEnemyWounded(EnemyWoundedSignal signal) 
@@ -95,6 +113,20 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
             foreach (var enemy in elements.Cast<IEnemy>())
             {
                 enemy.TakeDamage(signal.Damage);
+            }
+        }
+        
+        public struct UpdateEnemyStatsJob : IJobParallelFor
+        {
+            public EnemyEffectTrigger Trigger;
+            public NativeArray<EnemyEffectEntityData> Effects;
+            public NativeArray<Enemy.Data> EnemiesData;
+            
+            public void Execute(int index)
+            {
+                var data = EnemiesData[index];
+                data.ApplyEffects(Trigger, Effects);
+                EnemiesData[index] = data;
             }
         }
     }

@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: _entity
       value: 
       objectReference: {fileID: 11400000, guid: 1a42b0a631fbb8547b092d832a28a495, type: 2}
+    - target: {fileID: 7572814299010530781, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
+      propertyPath: <Entity>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: 1a42b0a631fbb8547b092d832a28a495, type: 2}
     - target: {fileID: 8243656736924968412, guid: 4c2ac4562eb611343bd285c2000d2ead, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

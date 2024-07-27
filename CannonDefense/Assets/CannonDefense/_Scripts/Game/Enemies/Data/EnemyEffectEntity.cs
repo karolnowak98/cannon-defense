@@ -1,6 +1,7 @@
 using GlassyCode.CannonDefense.Core.Data;
 using GlassyCode.CannonDefense.Core.Utility;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
+using Unity.Collections;
 using UnityEngine;
 
 namespace GlassyCode.CannonDefense.Game.Enemies.Data
@@ -16,5 +17,30 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Data
         [field: SerializeField] public bool AffectSelf { get; private set; }
         [field: SerializeField] public bool AffectOthers { get; private set; }
         [field: SerializeField] public EnemyType[] AffectedEnemyTypes { get; private set; }
+
+        public EnemyEffectEntityData GetData() => new EnemyEffectEntityData
+        {
+            EffectType = EffectType,
+            EffectTrigger = EffectTrigger,
+            EffectValue = EffectValue,
+            AffectSelf = AffectSelf,
+            AffectOthers = AffectOthers,
+            AffectedEnemyTypes = new NativeArray<EnemyType>()
+            {
+                
+            }
+        };
+        
+        private void 
+    }
+
+    public struct EnemyEffectEntityData
+    {
+        public EnemyEffectType EffectType;
+        public EnemyEffectTrigger EffectTrigger;
+        public float EffectValue;
+        public bool AffectSelf;
+        public bool AffectOthers;
+        public NativeArray<EnemyType> AffectedEnemyTypes;
     }
 }

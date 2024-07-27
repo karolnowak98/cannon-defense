@@ -19,4 +19,5 @@ MonoBehaviour:
   <Damage>k__BackingField: 0
   <Score>k__BackingField: 8
   <Experience>k__BackingField: 15
-  <Effects>k__BackingField: []
+  <Effects>k__BackingField:
+  - {fileID: 11400000, guid: 89cacfa8e18cbc74a8c2e86ecb26418b, type: 2}
