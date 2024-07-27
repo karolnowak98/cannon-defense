@@ -6,7 +6,12 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
 {
     public interface IEnemy
     {
+        EnemyEntity Entity { get; }
+        EnemyType Type { get; }
+        float CurrentHealth { get; set; }
+        float CurrentMoveSpeed { get; set; }
         void TakeDamage(int damage);
         void UpdateStatsByEffects(EnemyEffectTrigger trigger, IEnumerable<EnemyEffectEntity> effects);
+        void ApplyEffects(float speedModifier, float healthModifier, bool shouldHealCompletely);
     }
 }

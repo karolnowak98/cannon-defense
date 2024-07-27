@@ -6,6 +6,7 @@ using GlassyCode.CannonDefense.Core.Utility;
 using GlassyCode.CannonDefense.Game.Enemies.Data;
 using GlassyCode.CannonDefense.Game.Enemies.Enums;
 using GlassyCode.CannonDefense.Game.Enemies.Logic.Signals;
+using Unity.Collections;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -15,7 +16,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
     [RequireComponent(typeof(MeshRenderer))]
     public class Enemy : GlassyObjectPoolElement<Enemy>, IEnemy, IQuadtreeElement
     {
-        [SerializeField] private EnemyEntity _entity;
+        [field: SerializeField] public EnemyEntity Entity { get; private set; }
 
         private SignalBus _signalBus;
         private IQuadtree _quadtree;
@@ -25,7 +26,9 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         private float _currentMoveSpeed;
         private Bounds _bounds;
         
-        public EnemyType Type => _entity.Type;
+        public EnemyType Type => Entity.Type;
+        public float CurrentHealth { get; set; }
+        public float CurrentMoveSpeed { get; set; }
         public Vector2 Position => new(transform.position.x, transform.position.z);
         public Rect Rect => _bounds.GetXZRect();
 
@@ -61,7 +64,7 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         {
             if (!other.CompareTag("Finish")) return;
             
-            _signalBus.Fire(new EnemyCrossedFinishLineSignal{Effects = _entity.Effects, Damage = _entity.Damage});
+            _signalBus.Fire(new EnemyCrossedFinishLineSignal{Effects = Entity.Effects, Damage = Entity.Damage});
             
             if (IsActive)
             {
@@ -71,8 +74,8 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         
         public override void Reset()
         {
-            _currentHealth = _entity.MaxHealth;
-            _currentMoveSpeed = _entity.MoveSpeed;
+            _currentHealth = Entity.MaxHealth;
+            _currentMoveSpeed = Entity.MoveSpeed;
             _rb.velocity = Vector3.back * _currentMoveSpeed;
             _meshRenderer.material.color = Colors.GetRandomColor();
             _quadtree.AddElement(this);
@@ -82,11 +85,11 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
         public void TakeDamage(int damage)
         {
             _currentHealth -= damage;
-            _signalBus.Fire(new EnemyWoundedSignal{Effects = _entity.Effects});
+            _signalBus.Fire(new EnemyWoundedSignal{Effects = Entity.Effects});
             
             if (_currentHealth <= 0)
             {
-                _signalBus.Fire(new EnemyDiedSignal{Effects = _entity.Effects, Score = _entity.Score, Experience = _entity.Experience});
+                _signalBus.Fire(new EnemyDiedSignal{Effects = Entity.Effects, Score = Entity.Score, Experience = Entity.Experience});
                 if (IsActive)
                 {
                     Pool.Release(this);
@@ -121,18 +124,77 @@ namespace GlassyCode.CannonDefense.Game.Enemies.Logic
                         _currentHealth += _currentHealth * effect.EffectValue;
                         break;
                     case EnemyEffectType.HealCompletelyIfLessPercentage:
-                        if (HasLessHealthThanPercent(0.5f))
+                        /*if (HasLessHealthThanPercent(0.5f))
                         {
-                            _currentHealth = _entity.MaxHealth;
-                        }
+                            _currentHealth = Entity.MaxHealth;
+                        }*/
                         break;
                 }
             }
 
             _rb.velocity = Vector3.back * _currentMoveSpeed;
         }
-        
-        private bool HasLessHealthThanPercent(float percentage) => _currentHealth < _entity.MaxHealth * percentage;
+
+        public struct Data
+        {
+            public float MoveSpeed;
+            public float Health;
+            public float MaxHealth;
+            public EnemyType Type;
+            
+            public Data(IEnemy enemy)
+            {
+                MoveSpeed = enemy.CurrentMoveSpeed;
+                Health = enemy.CurrentHealth;
+                MaxHealth = enemy.Entity.MaxHealth;
+                Type = EnemyType.BigCube;
+            }
+
+            public void ApplyEffects(EnemyEffectTrigger trigger, NativeArray<EnemyEffectEntityData> effects)
+            {
+                foreach (var effect in effects)
+                {
+                    var type = Type;
+                    
+                    if (effect.EffectTrigger != trigger || !effect.AffectOthers || effect.AffectedEnemyTypes.All(enemyType => enemyType != type)) continue;
+
+                    switch (effect.EffectType)
+                    {
+                        case EnemyEffectType.AddMovementSpeedValue:
+                            MoveSpeed += effect.EffectValue;
+                            break;
+                        case EnemyEffectType.AddMovementSpeedPercentage:
+                            MoveSpeed += MoveSpeed * effect.EffectValue;
+                            break;
+                        case EnemyEffectType.DecreaseMovementSpeedValue:
+                            MoveSpeed -= effect.EffectValue;
+                            break;
+                        case EnemyEffectType.DecreaseMovementSpeedPercentage:
+                            MoveSpeed -= MoveSpeed * effect.EffectValue;
+                            break;
+                        case EnemyEffectType.HealValue:
+                            Health += effect.EffectValue;
+                            break;
+                        case EnemyEffectType.HealPercentage:
+                            Health += Health * effect.EffectValue;
+                            break;
+                        case EnemyEffectType.HealCompletelyIfLessPercentage:
+                            if (HasLessHealthThanPercent(0.5f))
+                            {
+                                Health = MaxHealth;
+                            }
+                            break;
+                    }
+                }
+            }
+            
+            private bool HasLessHealthThanPercent(float percentage) => Health < MaxHealth * percentage;
+        }
+
+        public void ApplyEffects(float speedModifier, float healthModifier, bool shouldHealCompletely)
+        {
+            //
+        }
         
         public sealed class Factory : PlaceholderFactory<Object, Enemy>{ }
     }
